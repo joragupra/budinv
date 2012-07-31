@@ -3,7 +3,7 @@ package com.joragupra.budinv.domain;
 import java.util.Date;
 
 public class BookkeepingEntry {
-	
+
 	private Date logDate;
 
 	private Date incurredDate;
@@ -11,7 +11,7 @@ public class BookkeepingEntry {
 	private double amount;
 
 	private String comments;
-	
+
 	public Date getLogDate() {
 		return logDate;
 	}
@@ -44,5 +44,4 @@ public class BookkeepingEntry {
 		this.comments = comments;
 	}
 
-	
 }

@@ -9,14 +9,14 @@ public class ExpenseConceptTest extends TestCase {
 		ExpenseConcept carManteinance = new ExpenseConcept("Car manteinance", 800);
 		ExpenseFactory.createExpense(carManteinance, 200);
 		ExpenseFactory.createExpense(carManteinance, 400);
-		assertEquals(200d, carManteinance.getDifference());
+		assertEquals(200d, carManteinance.calculateDeviation());
 	}
 	
 	public void testGetDifference_Negative(){
 		ExpenseConcept carManteinance = new ExpenseConcept("Car manteinance", 400);
 		ExpenseFactory.createExpense(carManteinance, 200);
 		ExpenseFactory.createExpense(carManteinance, 400);
-		assertEquals(-200d, carManteinance.getDifference());
+		assertEquals(-200d, carManteinance.calculateDeviation());
 	}
 	
 	public void testGetActualExpending(){

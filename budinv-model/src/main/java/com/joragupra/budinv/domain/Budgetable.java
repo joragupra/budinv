@@ -1,10 +1,8 @@
 package com.joragupra.budinv.domain;
 
-public interface Budgetable {
+public interface Budgetable extends Expense {
 	
 	double getBudgetedAmount();
 	
-	double getActualSpending();
-	
-	double getDifference();
+	double calculateDeviation();
 }
