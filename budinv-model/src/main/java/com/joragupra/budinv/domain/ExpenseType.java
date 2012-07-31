@@ -1,5 +1,7 @@
 package com.joragupra.budinv.domain;
 
+import java.util.Set;
+
 
 public class ExpenseType extends AggregationBudgetedExpenseCategory {
 
@@ -13,5 +15,9 @@ public class ExpenseType extends AggregationBudgetedExpenseCategory {
 	
 	public void unregisterConcept(ExpenseConcept concept){
 		super.removeExpense(concept);
+	}
+	
+	public Set<ExpenseConcept> getConcepts(){
+		return (Set<ExpenseConcept>) super.getExpenses();
 	}
 }

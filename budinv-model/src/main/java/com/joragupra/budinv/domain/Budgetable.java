@@ -4,5 +4,5 @@ public interface Budgetable extends Expense {
 	
 	double getBudgetedAmount();
 	
-	double calculateDeviation();
+	double calculateDeviation(Ledger ledger);
 }

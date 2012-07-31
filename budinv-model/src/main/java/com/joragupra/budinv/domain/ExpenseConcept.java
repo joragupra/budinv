@@ -47,8 +47,4 @@ public class ExpenseConcept extends DirectlyBudgetedExpenseCategory implements B
 			this.type.registerConcept(this);
 		}
 	}
-	
-	public void bookExpense(IncurredExpense expense){
-		super.addExpense(expense);
-	}
 }

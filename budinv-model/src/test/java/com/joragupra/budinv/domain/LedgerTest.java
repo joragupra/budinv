@@ -9,7 +9,6 @@ public class LedgerTest extends TestCase {
 	public void testCalculateIncome(){
 		Date today = new Date();
 		Date tomorrow = new Date();
-		System.out.println("Today: " + today + ". Tomorrow: " + tomorrow);
 		Ledger ledger = new Ledger();
 		Income todayIncome = new Income();
 		todayIncome.setAmount(1000.00);
@@ -25,7 +24,6 @@ public class LedgerTest extends TestCase {
 	public void testCalculateExpense(){
 		Date today = new Date();
 		Date tomorrow = new Date();
-		System.out.println("Today: " + today + ". Tomorrow: " + tomorrow);
 		Ledger ledger = new Ledger();
 		IncurredExpense todayExpense = new IncurredExpense(new ExpenseConcept("CAR"));
 		todayExpense.setAmount(1000.00);
@@ -52,5 +50,27 @@ public class LedgerTest extends TestCase {
 		tomorrowExpense.setIncurredDate(tomorrow);
 		ledger.bookEntry(tomorrowExpense);
 		assertEquals(400.00, ledger.calculateBalance(today, tomorrow));
+	}
+	
+	public void testGetEntriesFromDateToDate(){
+		Date yesterday = new Date();
+		yesterday.setDate(yesterday.getDate() - 1);
+		Date today = new Date();
+		Date tomorrow = new Date();
+		tomorrow.setDate(tomorrow.getDate() + 1);
+		Ledger ledger = new Ledger();
+		Income yesterdayIncome = new Income();
+		yesterdayIncome.setAmount(500.00);
+		yesterdayIncome.setIncurredDate(yesterday);
+		ledger.bookEntry(yesterdayIncome);
+		Income todayIncome = new Income();
+		todayIncome.setAmount(1000.00);
+		todayIncome.setIncurredDate(today);
+		ledger.bookEntry(todayIncome);
+		IncurredExpense tomorrowExpense = new IncurredExpense(new ExpenseConcept("FOOD"));
+		tomorrowExpense.setAmount(600.00);
+		tomorrowExpense.setIncurredDate(tomorrow);
+		ledger.bookEntry(tomorrowExpense);
+		assertEquals(2, ledger.getEntriesFromDateToDate(yesterday, today).size());
 	}
 }

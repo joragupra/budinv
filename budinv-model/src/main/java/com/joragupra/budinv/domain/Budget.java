@@ -8,7 +8,7 @@ public class Budget {
 	
 	private RegularExpense budgetedRegularExpense;
 	
-	private VariableExpense budgedVariableExpense;
+	private VariableExpense budgetedVariableExpense;
 	
 	public Budget(){
 		super();
@@ -47,11 +47,11 @@ public class Budget {
 		this.budgetedRegularExpense = budgetedRegularExpense;
 	}
 
-	public VariableExpense getBudgedVariableExpense() {
-		return budgedVariableExpense;
+	public VariableExpense getBudgetedVariableExpense() {
+		return budgetedVariableExpense;
 	}
 
-	public void setBudgedVariableExpense(VariableExpense budgedVariableExpense) {
-		this.budgedVariableExpense = budgedVariableExpense;
+	public void setBudgetedVariableExpense(VariableExpense budgetedVariableExpense) {
+		this.budgetedVariableExpense = budgetedVariableExpense;
 	}
 }

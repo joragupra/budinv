@@ -7,7 +7,6 @@ public class IncurredExpense extends BookkeepingEntry implements Expense {
 	
 	public IncurredExpense(ExpenseConcept concept){
 		this.concept = concept;
-		this.concept.bookExpense(this);
 	}
 	
 	public ExpenseConcept getConcept() {
@@ -19,7 +18,7 @@ public class IncurredExpense extends BookkeepingEntry implements Expense {
 	}
 
 	@Override
-	public double getActualSpending() {
+	public double getActualSpending(Ledger ledger) {
 		return super.getAmount();
 	}
 }
