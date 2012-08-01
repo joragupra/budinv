@@ -1,0 +1,30 @@
+<html>
+<body>
+
+<script src="jquery-1.7.2.min.js"></script>
+<script src="jquery-Mustache.js"></script>
+<script src="mustache.js"></script>
+<script src="dust-full-0.3.0.min.js"></script>
+
+<script id="tpl-ledger" type="text/html">
+    <ul>{{#entries}} {{#entry}} <li> {{amount}} </li> {{/entry}} {{/entries}}</ul>
+</script>
+
+<script>
+
+var templateData = $.getJSON('/budinv-web/services/ledger');
+
+var template = $('#tpl-ledger').html();
+
+$('#sampleArea').html(Mustache.to_html(template, templateData));
+
+</script>
+ 
+<h2>Hello World!</h2>
+
+<div id="sampleArea">
+
+</div>
+
+</body>
+</html>

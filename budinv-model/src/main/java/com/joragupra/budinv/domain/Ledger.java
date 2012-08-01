@@ -10,6 +10,21 @@ public class Ledger {
 	
 	private List<BookkeepingEntry> entries;
 	
+	private Date from;
+	
+	private Date to;
+	
+	public Ledger(){
+		this(null, null);
+	}
+	
+	public Ledger(Date from, Date to){
+		super();
+		this.entries = new ArrayList<BookkeepingEntry>();
+		this.from = from;
+		this.to = to;
+	}
+	
 	public Budget getBudget() {
 		return budget;
 	}
@@ -24,11 +39,6 @@ public class Ledger {
 
 	public void setEntries(List<BookkeepingEntry> entries) {
 		this.entries = entries;
-	}
-	
-	public Ledger(){
-		super();
-		this.entries = new ArrayList<BookkeepingEntry>();
 	}
 	
 	public void bookEntry(BookkeepingEntry entry){
@@ -64,8 +74,16 @@ public class Ledger {
 		return result;
 	}
 	
+	public double calculateBalance(){
+		return this.calculateBalance(this.from, this.to);
+	}
+	
 	public double calculateBalance(Date from, Date to){
 		return calculateIncome(from, to) - calculateExpense(from, to);
+	}
+	
+	public double calculateIncome(){
+		return this.calculateIncome(this.from, this.to);
 	}
 	
 	public double calculateIncome(Date from, Date to){
@@ -88,6 +106,10 @@ public class Ledger {
 			}
 		}
 		return income;
+	}
+	
+	public double calculateExpense(){
+		return this.calculateExpense(this.from, this.to);
 	}
 	
 	public double calculateExpense(Date from, Date to){
