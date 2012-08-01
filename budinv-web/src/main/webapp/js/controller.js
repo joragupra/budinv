@@ -3,7 +3,7 @@ function load(serviceURL){
 		$.getJSON(serviceURL, function(data) {
 		    var template = $('#template').html();
 		    var html = Mustache.to_html(template, data);
-		    $('body').html(html);
+		    $('#content').html(html);
 		});
 	});
 }
@@ -13,7 +13,7 @@ function load(serviceURL, table){
 		$.getJSON(serviceURL, function(data) {
 		    var template = $('#template').html();
 		    var html = Mustache.to_html(template, data);
-		    $('body').html(html);
+		    $('#content').append(html);
 		});
 		$(document).ajaxStop(function(){
 			$('#' + table).dataTable();
