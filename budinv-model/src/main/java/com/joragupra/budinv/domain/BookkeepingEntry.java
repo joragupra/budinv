@@ -3,6 +3,8 @@ package com.joragupra.budinv.domain;
 import java.util.Date;
 
 public class BookkeepingEntry {
+	
+	private Long id;
 
 	private Date logDate;
 
@@ -11,7 +13,15 @@ public class BookkeepingEntry {
 	private double amount;
 
 	private String comments;
+	
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public Date getLogDate() {
 		return logDate;
 	}

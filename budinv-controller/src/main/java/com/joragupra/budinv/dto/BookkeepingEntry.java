@@ -10,7 +10,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public abstract class BookkeepingEntry {
-
+	
+	private Long id;
+	
 	private Date logDate;
 
 	private Date incurredDate;
@@ -18,7 +20,15 @@ public abstract class BookkeepingEntry {
 	private double amount;
 
 	private String comments;
+	
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public Date getLogDate() {
 		return logDate;
 	}
