@@ -6,15 +6,25 @@
 <body>
 
 <link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href='./css/fullcalendar.css' rel='stylesheet' type='text/css' />
 
 <script src="./js/mustache.js"></script>
 <script src="./js/jquery-1.7.2.min.js"></script>
 <script src="./js/jquery.dataTables.min.js"></script>
 <script src="./js/bootstrap-modal.js"></script>
 <script src="./js/bootstrap-transition.js"></script>
+<script src="./js/bootstrap-button.js"></script>
+<script src='./js/fullcalendar.js' type='text/javascript'></script>
 <script src="./js/controller.js" type="text/javascript"></script>
 
 <script id="template" type="text/html">
+
+	<div class="btn-group" data-toggle="buttons-radio">
+		<button id="list-btn" class="btn btn-primary">List</button>
+		<button id="calendar-btn" class="btn btn-primary">Calendar</button>
+	</div>
+
+	<br/><br/>
 
 	<table id="ledgers" class="table table-striped table-bordered">
     	<thead>	
@@ -51,12 +61,12 @@
 			</div>
 		{{/entry}}
 	{{/entries}}
+
+	<div id="calendar"></div>
 	
 </script>
 
 <script>$(load('/budinv-web/services/ledger'));</script>
-
-
 
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
@@ -113,7 +123,6 @@ SideBar
       <div class="page-header">
         <h1>Example page header</h1>
       </div>
-Body
     </div>
   </div>
 </div>
@@ -124,5 +133,30 @@ $(document).ajaxStop(function(){
 });
 </script>
 
+<script>
+$(document).ajaxStop(function() {
+
+    // page is now ready, initialize the calendar...
+
+    $('#calendar').fullCalendar({
+        // put your options and callbacks here
+    })
+
+});
+</script>
+
+<script>
+$(document).ajaxStop(function() {
+	$("#calendar-btn").click(function(){
+		$('#ledgers_wrapper').hide();
+		$('#calendar').show();
+	});
+	
+	$("#list-btn").click(function(){
+		$('#ledgers_wrapper').show();
+		$('#calendar').hide();
+	});
+});
+</script>
 </body>
 </html>
