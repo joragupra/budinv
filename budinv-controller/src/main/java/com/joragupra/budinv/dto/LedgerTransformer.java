@@ -23,4 +23,8 @@ public class LedgerTransformer {
 	public static com.joragupra.budinv.dto.Ledger domainToDto(com.joragupra.budinv.domain.Ledger ledger){
 		return mapper.map(ledger, com.joragupra.budinv.dto.Ledger.class);
 	}
+	
+	public static com.joragupra.budinv.dto.Event domainToEvent(com.joragupra.budinv.domain.BookkeepingEntry entry){
+		return mapper.map(entry, com.joragupra.budinv.dto.Event.class);
+	}
 }

@@ -19,5 +19,25 @@
 			<b get-method="calculateIncome">calculateIncome</b>
 		</field>
 	</mapping>
+	
+	<mapping>
+		<class-a>com.joragupra.budinv.dto.Event</class-a>
+		<class-b>com.joragupra.budinv.domain.BookkeepingEntry</class-b>
+		
+		<field>
+			<a>title</a>
+			<b>amount</b>
+		</field>
+		
+		<field>
+			<a>start</a>
+			<b>incurredDate</b>
+		</field>
+		
+		<field>
+			<a>end</a>
+			<b>incurredDate</b>
+		</field>
+	</mapping>
 
 </mappings> 
