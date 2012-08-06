@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -14,6 +17,7 @@ import com.joragupra.budinv.domain.ExpenseConcept;
 import com.joragupra.budinv.domain.Income;
 import com.joragupra.budinv.domain.IncurredExpense;
 import com.joragupra.budinv.dto.Event;
+import com.joragupra.budinv.dto.FormSubmitResponse;
 import com.joragupra.budinv.dto.Ledger;
 import com.joragupra.budinv.dto.LedgerTransformer;
 
@@ -81,5 +85,15 @@ public class LedgerResource {
 		events[2]=LedgerTransformer.domainToEvent(expense);
 		Gson gson = new Gson();
 		return gson.toJson(events);
+	}
+	
+	@POST
+	@Path("/save")
+	@Consumes("application/x-www-form-urlencoded")
+	@Produces({MediaType.APPLICATION_JSON})
+	public FormSubmitResponse saveBookkeepingEntry(@FormParam("a") double amount){
+		System.out.println("Amount received: " + amount);
+		FormSubmitResponse response = new FormSubmitResponse(true, "Success!");
+		return response;
 	}
 }
