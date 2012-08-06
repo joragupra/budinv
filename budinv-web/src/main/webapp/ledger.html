@@ -66,7 +66,7 @@
 	
 </script>
 
-<script>$(load('/budinv-web/services/ledger'));</script>
+<script>$(load('/budinv-web/services/ledger/show/list'));</script>
 
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
@@ -130,18 +130,10 @@ SideBar
 <script>
 $(document).ajaxStop(function(){
 	$('#ledgers').dataTable();
-});
-</script>
-
-<script>
-$(document).ajaxStop(function() {
-
-    // page is now ready, initialize the calendar...
-
-    $('#calendar').fullCalendar({
-        // put your options and callbacks here
-    })
-
+	
+	
+	
+	
 });
 </script>
 
@@ -149,11 +141,17 @@ $(document).ajaxStop(function() {
 $(document).ajaxStop(function() {
 	$("#calendar-btn").click(function(){
 		$('#ledgers_wrapper').hide();
+		$('#calendar').empty();
+		$('#calendar').fullCalendar({
+			// put your options and callbacks here
+			 events: '/budinv-web/services/ledger/show/calendar'
+		});
 		$('#calendar').show();
 	});
 	
 	$("#list-btn").click(function(){
 		$('#ledgers_wrapper').show();
+		$('#calendar').empty();
 		$('#calendar').hide();
 	});
 });
