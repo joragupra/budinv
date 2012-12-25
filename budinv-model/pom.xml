@@ -12,8 +12,7 @@
   <artifactId>budinv-model</artifactId>
   <packaging>jar</packaging>
 
-  <name>budinv-model</name>
-  <url>http://maven.apache.org</url>
+  <name>budinv business model</name>
 
   <dependencies>
     <dependency>

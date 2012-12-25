@@ -13,8 +13,7 @@
   <artifactId>budinv-rest-services</artifactId>
   <packaging>war</packaging>
 
-  <name>budinv-rest-services</name>
-  <url>http://maven.apache.org</url>
+  <name>budinv rest services publisher project</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

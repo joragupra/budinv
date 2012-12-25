@@ -12,8 +12,7 @@
 	<groupId>com.joragupra.budinv</groupId>
 	<artifactId>budinv-controller</artifactId>
 
-	<name>budinv-controller</name>
-	<url>http://maven.apache.org</url>
+	<name>budinv rest services implementation</name>
 
 	<dependencies>
 		<dependency>
