@@ -71,6 +71,6 @@ public class LedgerTest extends TestCase {
 		tomorrowExpense.setAmount(600.00);
 		tomorrowExpense.setIncurredDate(tomorrow);
 		ledger.bookEntry(tomorrowExpense);
-		assertEquals(2, ledger.getEntriesFromDateToDate(yesterday, today).size());
+		assertEquals(2, ledger.getEntriesBetweenDates(yesterday, today).size());
 	}
 }

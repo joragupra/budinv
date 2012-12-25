@@ -1,6 +1,9 @@
 package com.joragupra.budinv.domain;
 
-
+/**
+ * Category of expenses that can be directly budgeted and associated
+ * to an expense type.
+ */
 public class ExpenseConcept extends DirectlyBudgetedExpenseCategory implements Budgetable {
 	
 	private String description;

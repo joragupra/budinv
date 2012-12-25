@@ -2,7 +2,10 @@ package com.joragupra.budinv.domain;
 
 import java.util.Set;
 
-
+/**
+ * Special aggregation of budgeted expense category. The aggregated
+ * items are expense concepts.
+ */
 public class ExpenseType extends AggregationBudgetedExpenseCategory {
 
 	public ExpenseType(String name) {

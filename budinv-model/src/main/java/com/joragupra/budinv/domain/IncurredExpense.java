@@ -1,6 +1,9 @@
 package com.joragupra.budinv.domain;
 
-
+/**
+ * Special kind of bookkeeping entry corresponding to
+ * money actually spent.
+ */
 public class IncurredExpense extends BookkeepingEntry implements Expense {
 	
 	private ExpenseConcept concept;

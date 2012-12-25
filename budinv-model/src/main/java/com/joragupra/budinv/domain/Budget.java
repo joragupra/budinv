@@ -2,7 +2,7 @@ package com.joragupra.budinv.domain;
 
 public class Budget {
 	
-	private double bugetedRevenue;
+	private double budgetedRevenue;
 	
 	private IrregularExpense budgetedIrregularExpense;
 	
@@ -15,19 +15,11 @@ public class Budget {
 	}
 	
 	public double getBudgetedRevenue(){
-		return this.bugetedRevenue;
+		return this.budgetedRevenue;
 	}
 	
-	public void setBudgetedRevenue(double bugetedRevenue){
-		this.bugetedRevenue = bugetedRevenue;
-	}
-	
-	public double getBugetedRevenue() {
-		return bugetedRevenue;
-	}
-
-	public void setBugetedRevenue(double bugetedRevenue) {
-		this.bugetedRevenue = bugetedRevenue;
+	public void setBudgetedRevenue(double budgetedRevenue){
+		this.budgetedRevenue = budgetedRevenue;
 	}
 
 	public IrregularExpense getBudgetedIrregularExpense() {

@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * A group of bookkeeping entries which occurred between to dates.
+ * It should have an associated budget.
+ */
 public class Ledger {
 	
 	private Budget budget;
@@ -52,7 +56,7 @@ public class Ledger {
 		entries.add(i, entry);
 	}
 	
-	public List<BookkeepingEntry> getEntriesFromDateToDate(Date from, Date to){
+	public List<BookkeepingEntry> getEntriesBetweenDates(Date from, Date to){
 		List<BookkeepingEntry> result = new ArrayList<BookkeepingEntry>();
 		Date maxDate = new Date(to.getTime());
 		maxDate.setDate(to.getDate()+1);

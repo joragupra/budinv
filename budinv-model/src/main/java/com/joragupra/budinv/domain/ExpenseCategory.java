@@ -3,6 +3,10 @@ package com.joragupra.budinv.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Group of expenses that can be budgeted.
+ * @param <T>
+ */
 public abstract class ExpenseCategory<T extends Expense> implements Budgetable {
 
 	private String expenseCategoryCode;

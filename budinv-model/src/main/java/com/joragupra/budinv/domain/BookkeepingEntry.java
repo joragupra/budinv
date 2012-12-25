@@ -2,6 +2,10 @@ package com.joragupra.budinv.domain;
 
 import java.util.Date;
 
+/**
+ * This class represents any kind of entry we can annotate
+ * in our accountability system.
+ */
 public class BookkeepingEntry {
 	
 	private Long id;
