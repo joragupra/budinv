@@ -21,6 +21,10 @@
 
   <repositories>
       <repository>
+          <id>maven-central</id>
+          <url>http://repo1.maven.org/maven2</url>
+      </repository>
+      <repository>
           <id>3rdparty</id>
           <layout>default</layout>
           <url>https://github.com/joragupra/mvnrepo/3rdparty</url>
