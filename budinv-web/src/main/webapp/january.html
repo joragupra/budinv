@@ -26,110 +26,166 @@
 <body data-accent="blue">
 
 
-    <header id="nav-bar" class="container-fluid">
-        <div class="row-fluid">
-            <div class="span8">
-                <div id="header-container">
-                    <h5>&copy; 2013BudInv</h5>
-                    <div class="dropdown">
-                        <a class="header-dropdown dropdown-toggle accent-color" data-toggle="dropdown" href="#" >
-                            2013
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="budget.html">Budget</a></li>
-                            <li class="dropdown-submenu">
-                                <a href="#">Expenses by month</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="january.html">January</a></li>
-                                    <li><a href="february.html">February</a></li>
-                                    <li><a href="#">March</a></li>
-                                    <li><a href="#">April</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Start a new month</a></li>
-                                </ul>
-                            </li>
-                            <li class="divider"></li>
-                            <li><a href="index.html">Home</a></li>
-                        </ul>
-                    </div>
+<header id="nav-bar" class="container-fluid">
+    <div class="row-fluid">
+        <div class="span8">
+            <div id="header-container">
+                <h5>&copy; 2013BudInv</h5>
+                <div class="dropdown">
+                    <a class="header-dropdown dropdown-toggle accent-color" data-toggle="dropdown" href="#" >
+                        2013
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="budget.html">Budget</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="#">Expenses by month</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="january.html">January</a></li>
+                                <li><a href="february.html">February</a></li>
+                                <li><a href="#">March</a></li>
+                                <li><a href="#">April</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Start a new month</a></li>
+                            </ul>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="index.html">Home</a></li>
+                    </ul>
                 </div>
             </div>
-            <div id="top-info" class="pull-right">
-                <a href="#" class="pull-left">
-                    <div class="top-info-block">
-                        <h3>FirstName</h3>
-                        <h4>LastName</h4>
-                    </div>
-                    <div class="top-info-block">
-                        <b class="icon-user"></b>
-                    </div>
-                </a>
-                <hr class="separator pull-left"/>
-                <a id="settings" class="pull-left" href="#">
-                    <b class="icon-settings"></b>
-                </a>
-            </div>
         </div>
-    </header>
+        <div id="top-info" class="pull-right">
+            <a href="#" class="pull-left">
+                <div class="top-info-block">
+                    <h3>FirstName</h3>
+                    <h4>LastName</h4>
+                </div>
+                <div class="top-info-block">
+                    <b class="icon-user"></b>
+                </div>
+            </a>
+            <hr class="separator pull-left"/>
+            <a id="settings" class="pull-left" href="#">
+                <b class="icon-settings"></b>
+            </a>
+        </div>
+    </div>
+</header>
 
 <div class="container">
-    <p class="lead">Monthly budget {{Suma del presupuesto de todas las categorias}}</p>
+    <h1>Cash flow</h1>
 
-    <h1>Regular expenses</h1>
+    <h2>January</h2>
 
-    <div class="row-fluid">
-        <div class="span12">
+    <br/>
 
-            <table class="table table-condensed">
-                <thead>
-                <tr>
-                    <th>Project</th>
-                    <th>Duration</th>
-                    <th class="span2">Contract Value</th>
-                    <th class="span2">Budget Cost</th>
-                    <th class="span2">Cost Variance</th>
-                    <th>Location</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>ACME</td>
-                    <td>440 days</td>
-                    <td class="span2 align-right">70.570,00&#x20AC;</td>
-                    <td class="span2 align-right">70.570,00&#x20AC;</td>
-                    <td class="span2 align-right">+3000,00</td>
-                    <td>Milano</td>
-                </tr>
-                <tr>
-                    <td>Surface</td>
-                    <td>140 days</td>
-                    <td class="span2 align-right">70.570,00&#x20AC;</td>
-                    <td class="span2 align-right">70.570,00&#x20AC;</td>
-                    <td class="span2 align-right">+3000,00</td>
-                    <td>Milano</td>
-                </tr>
-                <tr>
-                    <td>OSX</td>
-                    <td>440 days</td>
-                    <td class="span2 align-right">70.570,00&#x20AC;</td>
-                    <td class="span2 align-right">70.570,00&#x20AC;</td>
-                    <td class="span2 align-right">+3000,00</td>
-                    <td>Milano</td>
-                </tr>
-                <tr>
-                    <td>WinRT</td>
-                    <td>1440 days</td>
-                    <td class="span2 align-right">170.570,00&#x20AC;</td>
-                    <td class="span2 align-right">170.570,00&#x20AC;</td>
-                    <td class="span2 align-right">-43000,00</td>
-                    <td>Milano</td>
-                </tr>
-                </tbody>
-            </table>
+    <div class="btn-group">
+        <button class="btn btn-large btn-success">Add income</button>
+        <button class="btn btn-large btn-danger">Add expense</button>
+    </div>
 
-            <h3>Total {{suma de los conceptos de esta categoría}}</h3>
-        </div>
+    <br/>
+    <br/>
+    <br/>
+
+    <h3>2nd January</h3>
+
+    <div class="row">
+        <div class="span8">Phone bill</div>
+        <div class="span4 text-error">{{32 EUR}}</div>
+    </div>
+
+    <div class="row">
+        <div class="span8">Pay check</div>
+        <div class="span4 text-success">{{1850 EUR}}</div>
+    </div>
+
+    <hr/>
+
+    <h3>4th January</h3>
+
+    <div class="row">
+        <div class="span8">Groceries</div>
+        <div class="span4 text-error">{{56 EUR}}</div>
+    </div>
+
+    <div class="row">
+        <div class="span8">Meal</div>
+        <div class="span4 text-error">{{18 EUR}}</div>
+    </div>
+
+    <hr/>
+
+    <h3>5th January</h3>
+
+    <div class="row">
+        <div class="span8">Going out</div>
+        <div class="span4 text-error">{{27 EUR}}</div>
+    </div>
+
+    <hr/>
+
+    <h3>9nd January</h3>
+
+    <div class="row">
+        <div class="span8">Electric supply</div>
+        <div class="span4 text-error">{{50 EUR}}</div>
+    </div>
+
+    <div class="row">
+        <div class="span8">Rent</div>
+        <div class="span4 text-success">{{450 EUR}}</div>
+    </div>
+
+    <hr/>
+
+    <h3>12nd January</h3>
+
+    <div class="row">
+        <div class="span8">Meal</div>
+        <div class="span4 text-error">{{22 EUR}}</div>
+    </div>
+
+    <hr/>
+
+    <h3>15th January</h3>
+
+    <div class="row">
+        <div class="span8">Groceries</div>
+        <div class="span4 text-error">{{29 EUR}}</div>
+    </div>
+
+    <div class="row">
+        <div class="span8">Car repair</div>
+        <div class="span4 text-error">{{448 EUR}}</div>
+    </div>
+
+    <hr/>
+
+    <h3>20nd January</h3>
+
+    <div class="row">
+        <div class="span8">Meal</div>
+        <div class="span4 text-error">{{15 EUR}}</div>
+    </div>
+
+    <hr/>
+
+    <h3>28th January</h3>
+
+    <div class="row">
+        <div class="span8">Go out</div>
+        <div class="span4 text-error">{{31 EUR}}</div>
+    </div>
+
+    <hr/>
+
+    <h3>29th January</h3>
+
+    <div class="row">
+        <div class="span8">Brunch</div>
+        <div class="span4 text-error">{{15 EUR}}</div>
     </div>
 
 </div>
@@ -166,7 +222,7 @@
                     <span class="win-label">Previous</span>
                 </a>
 
-                <a href="irregularExpenses.html" class="win-command">
+                <a href="february.html" class="win-command">
                     <span class="win-commandimage win-commandring">&#xe1ca;</span>
                     <span class="win-label">Next</span>
                 </a>
