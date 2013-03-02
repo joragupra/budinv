@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css">
+    <link rel="stylesheet" type="text/css" href="css/bootmetro.css">
+    <link rel="stylesheet" type="text/css" href="css/bootmetro-tiles.css">
+    <link rel="stylesheet" type="text/css" href="css/bootmetro-charms.css">
+    <link rel="stylesheet" type="text/css" href="css/metro-ui-light.css">
+    <link rel="stylesheet" type="text/css" href="css/icomoon.css">
+
+    <!--  these two css are to use only for documentation -->
+    <link rel="stylesheet" type="text/css" href="css/demo.css">
+    <link rel="stylesheet" type="text/css" href="scripts/google-code-prettify/prettify.css" >
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="content/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
+
+</head>
+<body data-accent="blue">
+
+
+    <header id="nav-bar" class="container-fluid">
+        <div class="row-fluid">
+            <div class="span8">
+                <div id="header-container">
+                    <h5>&copy; 2013BudInv</h5>
+                    <div class="dropdown">
+                        <a class="header-dropdown dropdown-toggle accent-color" data-toggle="dropdown" href="#" >
+                            2013
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="budget.html">Budget</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="#">Expenses by month</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">January</a></li>
+                                    <li><a href="#">February</a></li>
+                                    <li><a href="#">March</a></li>
+                                    <li><a href="#">April</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Start a new month</a></li>
+                                </ul>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="index.html">Home</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="top-info" class="pull-right">
+                <a href="#" class="pull-left">
+                    <div class="top-info-block">
+                        <h3>FirstName</h3>
+                        <h4>LastName</h4>
+                    </div>
+                    <div class="top-info-block">
+                        <b class="icon-user"></b>
+                    </div>
+                </a>
+                <hr class="separator pull-left"/>
+                <a id="settings" class="pull-left" href="#">
+                    <b class="icon-settings"></b>
+                </a>
+            </div>
+        </div>
+    </header>
+
+<div class="container">
+    <h1>Monthly budget</h1>
+
+    <p class="lead">Summary by categories:</p>
+
+    <h2 class="text-error">
+        <div class="row">
+            <div class="span8">Regular expenses:</div>
+            <div class="span3">{{1100 EUR}}</div>
+            <div class="span1"><a href="regularExpenses.html" class="btn btn-danger">Review</a></div>
+        </div>
+    </h2>
+
+    <h2 class="text-warning">
+        <div class="row">
+            <div class="span8">Irregular expenses:</div>
+            <div class="span3">{{200 EUR}}</div>
+            <div class="span1"><a href="irregularExpenses.html" class="btn btn-warning">Review</a></div>
+        </div>
+    </h2>
+
+    <h2 class="text-success">
+        <div class="row">
+            <div class="span8">Variable expenses:</div>
+            <div class="span3">{{90 EUR}}</div>
+            <div class="span1"><a href="variableExpenses.html" class="btn btn-success">Review</a></div>
+        </div>
+    </h2>
+
+    <hr/>
+
+    <p class="lead">This is your budget distribution by category:</p>
+
+    <p>
+        <ul>
+            <li><strong class="text-error">{{35}} %</strong> is used for regular expenses</li>
+            <li><strong class="text-warning">{{20}} %</strong> is used for irregular expenses</li>
+            <li><strong class="text-success">{{40}} %</strong> is used for variable expenses</li>
+        </ul>
+
+    </p>
+
+    <p>
+        <div class="progress">
+            <div class="bar bar-danger" style="width: 35%;"></div>
+            <div class="bar bar-warning" style="width: 20%;"></div>
+            <div class="bar bar-success" style="width: 45%;"></div>
+        </div>
+    </p>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script>window.jQuery || document.write("<script src='scripts/jquery-1.7.2.min.js'>\x3C/script>")</script>
+
+<script type="text/javascript" src="scripts/google-code-prettify/prettify.js"></script>
+<script type="text/javascript" src="scripts/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="scripts/jquery.scrollTo.js"></script>
+<script type="text/javascript" src="scripts/bootstrap.min.js"></script>
+<script type="text/javascript" src="scripts/bootmetro.js"></script>
+<script type="text/javascript" src="scripts/bootmetro-charms.js"></script>
+<script type="text/javascript" src="scripts/demo.js"></script>
+<script type="text/javascript" src="scripts/holder.js"></script>
+
+<script type="text/javascript">
+    $(".metro").metro();
+</script>
+</body>
+</html>
