@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
+import com.gordondickens.myapp.repository.ProductRepository;
 import com.joragupra.budinv.domain.ExpenseConcept;
 import com.joragupra.budinv.domain.Income;
 import com.joragupra.budinv.domain.IncurredExpense;
@@ -20,18 +21,31 @@ import com.joragupra.budinv.dto.Event;
 import com.joragupra.budinv.dto.FormSubmitResponse;
 import com.joragupra.budinv.dto.Ledger;
 import com.joragupra.budinv.dto.LedgerTransformer;
+import com.joragupra.budinv.repository.LedgerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Hello world!
  * 
  */
-@Path("/ledger")
+@Controller
+@RequestMapping("/ledger")
 public class LedgerResource {
-	
-	@GET
-	@Path("/show/list")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+
+    @Autowired
+    private LedgerRepository repo;
+
+    @ResponseBody
+    @RequestMapping(value = "/show/list", method = RequestMethod.GET)
 	public Ledger getLedger() {
+
+        repo.findAll();
+
 		Date init = new Date();
 		init.setDate(1);
 		com.joragupra.budinv.domain.Ledger ledger = new com.joragupra.budinv.domain.Ledger(init, new Date());
