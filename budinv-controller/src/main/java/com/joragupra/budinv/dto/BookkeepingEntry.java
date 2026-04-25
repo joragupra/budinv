@@ -1,66 +1,37 @@
 package com.joragupra.budinv.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-public abstract class BookkeepingEntry {
-	
+public abstract sealed class BookkeepingEntry permits Income, IncurredExpense {
+
 	private Long id;
-	
-	private Date logDate;
-
-	private Date incurredDate;
-
+	private LocalDate logDate;
+	private LocalDate incurredDate;
 	private double amount;
-
 	private String comments;
-	
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public Date getLogDate() {
-		return logDate;
-	}
+	public Long getId() { return id; }
+	public void setId(Long id) { this.id = id; }
 
-	public void setLogDate(Date logDate) {
-		this.logDate = logDate;
-	}
+	public LocalDate getLogDate() { return logDate; }
+	public void setLogDate(LocalDate logDate) { this.logDate = logDate; }
 
-	public Date getIncurredDate() {
-		return incurredDate;
-	}
+	public LocalDate getIncurredDate() { return incurredDate; }
+	public void setIncurredDate(LocalDate incurredDate) { this.incurredDate = incurredDate; }
 
-	public void setIncurredDate(Date incurredDate) {
-		this.incurredDate = incurredDate;
-	}
+	public double getAmount() { return amount; }
+	public void setAmount(double amount) { this.amount = amount; }
 
-	public double getAmount() {
-		return amount;
-	}
+	public String getComments() { return comments; }
+	public void setComments(String comments) { this.comments = comments; }
 
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
-
-	public String getComments() {
-		return comments;
-	}
-
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
-	
 	@XmlElement(name = "entryType")
 	public abstract String getEntryType();
 }

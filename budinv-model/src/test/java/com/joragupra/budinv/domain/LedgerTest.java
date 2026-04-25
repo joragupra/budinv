@@ -1,14 +1,16 @@
 package com.joragupra.budinv.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class LedgerTest extends TestCase {
-	
-	public void testCalculateIncome(){
-		Date today = new Date();
-		Date tomorrow = new Date();
+class LedgerTest {
+
+	@Test
+	void calculateIncome() {
+		LocalDate today = LocalDate.now();
+		LocalDate tomorrow = today.plusDays(1);
 		Ledger ledger = new Ledger();
 		Income todayIncome = new Income();
 		todayIncome.setAmount(1000.00);
@@ -20,10 +22,11 @@ public class LedgerTest extends TestCase {
 		ledger.bookEntry(tomorrowIncome);
 		assertEquals(2000.00, ledger.calculateIncome(today, tomorrow));
 	}
-	
-	public void testCalculateExpense(){
-		Date today = new Date();
-		Date tomorrow = new Date();
+
+	@Test
+	void calculateExpense() {
+		LocalDate today = LocalDate.now();
+		LocalDate tomorrow = today.plusDays(1);
 		Ledger ledger = new Ledger();
 		IncurredExpense todayExpense = new IncurredExpense(new ExpenseConcept("CAR"));
 		todayExpense.setAmount(1000.00);
@@ -35,11 +38,11 @@ public class LedgerTest extends TestCase {
 		ledger.bookEntry(tomorrowExpense);
 		assertEquals(2000.00, ledger.calculateExpense(today, tomorrow));
 	}
-	
-	public void testCalculateBalanceExpense(){
-		Date today = new Date();
-		Date tomorrow = new Date();
-		tomorrow.setDate(tomorrow.getDate() + 1);
+
+	@Test
+	void calculateBalance() {
+		LocalDate today = LocalDate.now();
+		LocalDate tomorrow = today.plusDays(1);
 		Ledger ledger = new Ledger();
 		Income todayIncome = new Income();
 		todayIncome.setAmount(1000.00);
@@ -51,13 +54,12 @@ public class LedgerTest extends TestCase {
 		ledger.bookEntry(tomorrowExpense);
 		assertEquals(400.00, ledger.calculateBalance(today, tomorrow));
 	}
-	
-	public void testGetEntriesFromDateToDate(){
-		Date yesterday = new Date();
-		yesterday.setDate(yesterday.getDate() - 1);
-		Date today = new Date();
-		Date tomorrow = new Date();
-		tomorrow.setDate(tomorrow.getDate() + 1);
+
+	@Test
+	void getEntriesBetweenDates() {
+		LocalDate yesterday = LocalDate.now().minusDays(1);
+		LocalDate today = LocalDate.now();
+		LocalDate tomorrow = today.plusDays(1);
 		Ledger ledger = new Ledger();
 		Income yesterdayIncome = new Income();
 		yesterdayIncome.setAmount(500.00);

@@ -1,11 +1,11 @@
 package com.joragupra.budinv.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class Ledger {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
 }
