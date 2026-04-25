@@ -1,13 +1,13 @@
 package com.joragupra.budinv.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class ExpenseFactory {
-	
-	public static IncurredExpense createExpense(ExpenseConcept concept, double amount){
+
+	public static IncurredExpense createExpense(ExpenseConcept concept, double amount) {
 		IncurredExpense expense = new IncurredExpense(concept);
 		expense.setAmount(amount);
-		expense.setIncurredDate(new Date());
+		expense.setIncurredDate(LocalDate.now());
 		return expense;
 	}
 }

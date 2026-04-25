@@ -1,12 +1,9 @@
 package com.joragupra.budinv.dto;
 
-public class IncurredExpense extends BookkeepingEntry {
-	
-	private final String entryType = "EXPENSE";
-	
+public final class IncurredExpense extends BookkeepingEntry {
+
 	@Override
 	public String getEntryType() {
-		return entryType;
+		return "EXPENSE";
 	}
-
 }
