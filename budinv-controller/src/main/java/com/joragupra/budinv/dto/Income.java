@@ -1,13 +1,9 @@
 package com.joragupra.budinv.dto;
 
+public final class Income extends BookkeepingEntry {
 
-public class Income extends BookkeepingEntry {
-	
-	private final String entryType = "INCOME";
-	
 	@Override
 	public String getEntryType() {
-		return entryType;
+		return "INCOME";
 	}
-
 }

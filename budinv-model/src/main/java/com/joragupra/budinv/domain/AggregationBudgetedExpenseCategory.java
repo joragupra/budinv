@@ -16,11 +16,7 @@ public class AggregationBudgetedExpenseCategory extends ExpenseCategory<Budgetab
 	}
 	
 	private double calculateBudgetForAllBudgetedElements() {
-		double budget = 0.0;
-		for (Budgetable concept : super.expenses) {
-			budget += concept.getBudgetedAmount();
-		}
-		return budget;
+		return super.expenses.stream().mapToDouble(Budgetable::getBudgetedAmount).sum();
 	}
 
 }

@@ -1,41 +1,45 @@
 package com.joragupra.budinv.domain;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-import junit.framework.TestCase;
+class ExpenseConceptTest {
 
-public class ExpenseConceptTest extends TestCase {
-	
-	public void testGetDifference_Positive(){
+	@Test
+	void getDifference_positive() {
 		Ledger ledger = new Ledger();
-		ExpenseConcept carManteinance = new ExpenseConcept("Car manteinance", 800);
-		ledger.bookEntry(ExpenseFactory.createExpense(carManteinance, 200));
-		ledger.bookEntry(ExpenseFactory.createExpense(carManteinance, 400));
-		assertEquals(200d, carManteinance.calculateDeviation(ledger));
+		ExpenseConcept carMaintenance = new ExpenseConcept("Car maintenance", 800);
+		ledger.bookEntry(ExpenseFactory.createExpense(carMaintenance, 200));
+		ledger.bookEntry(ExpenseFactory.createExpense(carMaintenance, 400));
+		assertEquals(200d, carMaintenance.calculateDeviation(ledger));
 	}
-	
-	public void testGetDifference_Negative(){
+
+	@Test
+	void getDifference_negative() {
 		Ledger ledger = new Ledger();
-		ExpenseConcept carManteinance = new ExpenseConcept("Car manteinance", 400);
-		ledger.bookEntry(ExpenseFactory.createExpense(carManteinance, 200));
-		ledger.bookEntry(ExpenseFactory.createExpense(carManteinance, 400));
-		assertEquals(-200d, carManteinance.calculateDeviation(ledger));
+		ExpenseConcept carMaintenance = new ExpenseConcept("Car maintenance", 400);
+		ledger.bookEntry(ExpenseFactory.createExpense(carMaintenance, 200));
+		ledger.bookEntry(ExpenseFactory.createExpense(carMaintenance, 400));
+		assertEquals(-200d, carMaintenance.calculateDeviation(ledger));
 	}
-	
-	public void testGetActualExpending(){
+
+	@Test
+	void getActualSpending() {
 		Ledger ledger = new Ledger();
-		ExpenseConcept carManteinance = new ExpenseConcept("Car manteinance");
-		ledger.bookEntry(ExpenseFactory.createExpense(carManteinance, 200));
-		ledger.bookEntry(ExpenseFactory.createExpense(carManteinance, 400));
-		assertEquals(600d, carManteinance.getActualSpending(ledger));
+		ExpenseConcept carMaintenance = new ExpenseConcept("Car maintenance");
+		ledger.bookEntry(ExpenseFactory.createExpense(carMaintenance, 200));
+		ledger.bookEntry(ExpenseFactory.createExpense(carMaintenance, 400));
+		assertEquals(600d, carMaintenance.getActualSpending(ledger));
 	}
-	
-	public void testChangeType(){
-		ExpenseConcept carManteinance = new ExpenseConcept("Car manteinance");
+
+	@Test
+	void changeType() {
+		ExpenseConcept carMaintenance = new ExpenseConcept("Car maintenance");
 		VariableExpense variableExpense = new VariableExpense();
-		carManteinance.setType(variableExpense);
+		carMaintenance.setType(variableExpense);
 		IrregularExpense irregularExpense = new IrregularExpense();
-		carManteinance.changeType(irregularExpense);
-		assertEquals(irregularExpense, carManteinance.getType());
+		carMaintenance.changeType(irregularExpense);
+		assertEquals(irregularExpense, carMaintenance.getType());
 		assertEquals(0, variableExpense.getConcepts().size());
 		assertEquals(1, irregularExpense.getConcepts().size());
 	}

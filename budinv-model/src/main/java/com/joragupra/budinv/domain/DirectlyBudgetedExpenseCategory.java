@@ -5,7 +5,7 @@ package com.joragupra.budinv.domain;
  * budget (in spite of the others whose budget is calculated
  * as the sum of its items' budget.
  */
-public class DirectlyBudgetedExpenseCategory extends ExpenseCategory {
+public class DirectlyBudgetedExpenseCategory extends ExpenseCategory<IncurredExpense> {
 	
 	private double budgetedAmount;
 	
