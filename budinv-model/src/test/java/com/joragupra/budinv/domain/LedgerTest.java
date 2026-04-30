@@ -75,4 +75,51 @@ class LedgerTest {
 		ledger.bookEntry(tomorrowExpense);
 		assertEquals(2, ledger.getEntriesBetweenDates(yesterday, today).size());
 	}
+
+	@Test
+	void bookEntry_insertsEntriesInChronologicalOrder() {
+		LocalDate first = LocalDate.of(2024, 1, 5);
+		LocalDate second = LocalDate.of(2024, 1, 10);
+		LocalDate third = LocalDate.of(2024, 1, 20);
+		Ledger ledger = new Ledger();
+		Income laterIncome = new Income();
+		laterIncome.setIncurredDate(third);
+		laterIncome.setAmount(300.0);
+		Income earlierIncome = new Income();
+		earlierIncome.setIncurredDate(first);
+		earlierIncome.setAmount(100.0);
+		Income middleIncome = new Income();
+		middleIncome.setIncurredDate(second);
+		middleIncome.setAmount(200.0);
+		ledger.bookEntry(laterIncome);
+		ledger.bookEntry(earlierIncome);
+		ledger.bookEntry(middleIncome);
+		assertEquals(first, ledger.getEntries().get(0).getIncurredDate());
+		assertEquals(second, ledger.getEntries().get(1).getIncurredDate());
+		assertEquals(third, ledger.getEntries().get(2).getIncurredDate());
+	}
+
+	@Test
+	void calculateIncome_emptyLedger() {
+		LocalDate from = LocalDate.of(2024, 1, 1);
+		LocalDate to = LocalDate.of(2024, 1, 31);
+		Ledger ledger = new Ledger(from, to);
+		assertEquals(0.0, ledger.calculateIncome());
+	}
+
+	@Test
+	void calculateExpense_emptyLedger() {
+		LocalDate from = LocalDate.of(2024, 1, 1);
+		LocalDate to = LocalDate.of(2024, 1, 31);
+		Ledger ledger = new Ledger(from, to);
+		assertEquals(0.0, ledger.calculateExpense());
+	}
+
+	@Test
+	void calculateBalance_emptyLedger() {
+		LocalDate from = LocalDate.of(2024, 1, 1);
+		LocalDate to = LocalDate.of(2024, 1, 31);
+		Ledger ledger = new Ledger(from, to);
+		assertEquals(0.0, ledger.calculateBalance());
+	}
 }
