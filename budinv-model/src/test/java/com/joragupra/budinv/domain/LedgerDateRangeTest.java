@@ -46,6 +46,34 @@ class LedgerDateRangeTest {
 	}
 
 	@Test
+	void calculateIncome_includesEntryOnFromDate() {
+		LocalDate from = LocalDate.of(2024, 3, 1);
+		LocalDate to = LocalDate.of(2024, 3, 31);
+		Ledger ledger = new Ledger(from, to);
+
+		Income onFrom = new Income();
+		onFrom.setAmount(300.0);
+		onFrom.setIncurredDate(from);
+		ledger.bookEntry(onFrom);
+
+		assertEquals(300.0, ledger.calculateIncome());
+	}
+
+	@Test
+	void calculateIncome_includesEntryOnToDate() {
+		LocalDate from = LocalDate.of(2024, 3, 1);
+		LocalDate to = LocalDate.of(2024, 3, 31);
+		Ledger ledger = new Ledger(from, to);
+
+		Income onTo = new Income();
+		onTo.setAmount(150.0);
+		onTo.setIncurredDate(to);
+		ledger.bookEntry(onTo);
+
+		assertEquals(150.0, ledger.calculateIncome());
+	}
+
+	@Test
 	void calculateExpense_ignoresEntryBeforeFrom() {
 		LocalDate from = LocalDate.of(2024, 3, 1);
 		LocalDate to = LocalDate.of(2024, 3, 31);
@@ -62,6 +90,34 @@ class LedgerDateRangeTest {
 		ledger.bookEntry(inRange);
 
 		assertEquals(100.0, ledger.calculateExpense());
+	}
+
+	@Test
+	void calculateExpense_includesEntryOnFromDate() {
+		LocalDate from = LocalDate.of(2024, 3, 1);
+		LocalDate to = LocalDate.of(2024, 3, 31);
+		Ledger ledger = new Ledger(from, to);
+
+		IncurredExpense onFrom = new IncurredExpense(new ExpenseConcept("Car"));
+		onFrom.setAmount(250.0);
+		onFrom.setIncurredDate(from);
+		ledger.bookEntry(onFrom);
+
+		assertEquals(250.0, ledger.calculateExpense());
+	}
+
+	@Test
+	void calculateExpense_includesEntryOnToDate() {
+		LocalDate from = LocalDate.of(2024, 3, 1);
+		LocalDate to = LocalDate.of(2024, 3, 31);
+		Ledger ledger = new Ledger(from, to);
+
+		IncurredExpense onTo = new IncurredExpense(new ExpenseConcept("Food"));
+		onTo.setAmount(75.0);
+		onTo.setIncurredDate(to);
+		ledger.bookEntry(onTo);
+
+		assertEquals(75.0, ledger.calculateExpense());
 	}
 
 	@Test
