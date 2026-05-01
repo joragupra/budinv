@@ -30,6 +30,38 @@ class LedgerEntriesBetweenTest {
 	}
 
 	@Test
+	void getEntriesBetweenDates_includesEntryOnFromDate() {
+		LocalDate from = LocalDate.of(2024, 3, 1);
+		LocalDate to = LocalDate.of(2024, 3, 31);
+		Ledger ledger = new Ledger();
+
+		Income onFrom = new Income();
+		onFrom.setAmount(100.0);
+		onFrom.setIncurredDate(from);
+		ledger.bookEntry(onFrom);
+
+		List<BookkeepingEntry> result = ledger.getEntriesBetweenDates(from, to);
+		assertEquals(1, result.size());
+		assertEquals(onFrom, result.get(0));
+	}
+
+	@Test
+	void getEntriesBetweenDates_includesEntryOnToDate() {
+		LocalDate from = LocalDate.of(2024, 3, 1);
+		LocalDate to = LocalDate.of(2024, 3, 31);
+		Ledger ledger = new Ledger();
+
+		Income onTo = new Income();
+		onTo.setAmount(200.0);
+		onTo.setIncurredDate(to);
+		ledger.bookEntry(onTo);
+
+		List<BookkeepingEntry> result = ledger.getEntriesBetweenDates(from, to);
+		assertEquals(1, result.size());
+		assertEquals(onTo, result.get(0));
+	}
+
+	@Test
 	void getEntriesBetweenDates_loopExitsNaturally_whenNoEntryAfterTo() {
 		LocalDate from = LocalDate.of(2024, 3, 1);
 		LocalDate to = LocalDate.of(2024, 3, 31);
