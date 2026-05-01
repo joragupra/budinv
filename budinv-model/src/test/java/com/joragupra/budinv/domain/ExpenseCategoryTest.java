@@ -16,12 +16,12 @@ class ExpenseCategoryTest {
 
 	@Test
 	void getActualSpending_sumsAllIncurredExpensesInLedger() {
-		DirectlyBudgetedExpenseCategory category = new DirectlyBudgetedExpenseCategory("Transport");
+		ExpenseConcept category = new ExpenseConcept("Transport");
 		Ledger ledger = new Ledger();
-		IncurredExpense e1 = new IncurredExpense(new ExpenseConcept("Car"));
+		IncurredExpense e1 = new IncurredExpense(category);
 		e1.setAmount(100.0);
 		e1.setIncurredDate(LocalDate.now());
-		IncurredExpense e2 = new IncurredExpense(new ExpenseConcept("Bus"));
+		IncurredExpense e2 = new IncurredExpense(category);
 		e2.setAmount(50.0);
 		e2.setIncurredDate(LocalDate.now());
 		ledger.bookEntry(e1);
@@ -31,12 +31,12 @@ class ExpenseCategoryTest {
 
 	@Test
 	void getActualSpending_ignoresIncomeEntries() {
-		DirectlyBudgetedExpenseCategory category = new DirectlyBudgetedExpenseCategory("Transport");
+		ExpenseConcept category = new ExpenseConcept("Transport");
 		Ledger ledger = new Ledger();
 		Income income = new Income();
 		income.setAmount(1000.0);
 		income.setIncurredDate(LocalDate.now());
-		IncurredExpense expense = new IncurredExpense(new ExpenseConcept("Car"));
+		IncurredExpense expense = new IncurredExpense(category);
 		expense.setAmount(200.0);
 		expense.setIncurredDate(LocalDate.now());
 		ledger.bookEntry(income);
@@ -63,10 +63,10 @@ class ExpenseCategoryTest {
 
 	@Test
 	void calculateDeviation_positiveMeansUnderBudget() {
-		DirectlyBudgetedExpenseCategory category = new DirectlyBudgetedExpenseCategory("Transport");
+		ExpenseConcept category = new ExpenseConcept("Transport");
 		category.setBudgetedAmount(200.0);
 		Ledger ledger = new Ledger();
-		IncurredExpense expense = new IncurredExpense(new ExpenseConcept("Car"));
+		IncurredExpense expense = new IncurredExpense(category);
 		expense.setAmount(150.0);
 		expense.setIncurredDate(LocalDate.now());
 		ledger.bookEntry(expense);
@@ -75,10 +75,10 @@ class ExpenseCategoryTest {
 
 	@Test
 	void calculateDeviation_negativeMeansOverBudget() {
-		DirectlyBudgetedExpenseCategory category = new DirectlyBudgetedExpenseCategory("Transport");
+		ExpenseConcept category = new ExpenseConcept("Transport");
 		category.setBudgetedAmount(100.0);
 		Ledger ledger = new Ledger();
-		IncurredExpense expense = new IncurredExpense(new ExpenseConcept("Car"));
+		IncurredExpense expense = new IncurredExpense(category);
 		expense.setAmount(150.0);
 		expense.setIncurredDate(LocalDate.now());
 		ledger.bookEntry(expense);
