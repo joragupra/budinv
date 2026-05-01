@@ -9,8 +9,8 @@ class LedgerTest {
 
 	@Test
 	void calculateIncome() {
-		LocalDate today = LocalDate.now();
-		LocalDate tomorrow = today.plusDays(1);
+		LocalDate today = LocalDate.of(2024, 1, 15);
+		LocalDate tomorrow = LocalDate.of(2024, 1, 16);
 		Ledger ledger = new Ledger();
 		Income todayIncome = new Income();
 		todayIncome.setAmount(1000.00);
@@ -25,8 +25,8 @@ class LedgerTest {
 
 	@Test
 	void calculateExpense() {
-		LocalDate today = LocalDate.now();
-		LocalDate tomorrow = today.plusDays(1);
+		LocalDate today = LocalDate.of(2024, 1, 15);
+		LocalDate tomorrow = LocalDate.of(2024, 1, 16);
 		Ledger ledger = new Ledger();
 		IncurredExpense todayExpense = new IncurredExpense(new ExpenseConcept("CAR"));
 		todayExpense.setAmount(1000.00);
@@ -41,8 +41,8 @@ class LedgerTest {
 
 	@Test
 	void calculateBalance() {
-		LocalDate today = LocalDate.now();
-		LocalDate tomorrow = today.plusDays(1);
+		LocalDate today = LocalDate.of(2024, 1, 15);
+		LocalDate tomorrow = LocalDate.of(2024, 1, 16);
 		Ledger ledger = new Ledger();
 		Income todayIncome = new Income();
 		todayIncome.setAmount(1000.00);
@@ -57,9 +57,9 @@ class LedgerTest {
 
 	@Test
 	void getEntriesBetweenDates() {
-		LocalDate yesterday = LocalDate.now().minusDays(1);
-		LocalDate today = LocalDate.now();
-		LocalDate tomorrow = today.plusDays(1);
+		LocalDate yesterday = LocalDate.of(2024, 1, 14);
+		LocalDate today = LocalDate.of(2024, 1, 15);
+		LocalDate tomorrow = LocalDate.of(2024, 1, 16);
 		Ledger ledger = new Ledger();
 		Income yesterdayIncome = new Income();
 		yesterdayIncome.setAmount(500.00);
