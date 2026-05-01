@@ -33,6 +33,17 @@ class ExpenseConceptTest {
 	}
 
 	@Test
+	void getActualSpending_onlyCountsOwnExpenses() {
+		Ledger ledger = new Ledger();
+		ExpenseConcept car = new ExpenseConcept("Car");
+		ExpenseConcept food = new ExpenseConcept("Food");
+		ledger.bookEntry(ExpenseFactory.createExpense(car, 100));
+		ledger.bookEntry(ExpenseFactory.createExpense(food, 50));
+		assertEquals(100.0, car.getActualSpending(ledger));
+		assertEquals(50.0, food.getActualSpending(ledger));
+	}
+
+	@Test
 	void changeType() {
 		ExpenseConcept carMaintenance = new ExpenseConcept("Car maintenance");
 		VariableExpense variableExpense = new VariableExpense();

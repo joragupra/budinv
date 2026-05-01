@@ -66,7 +66,7 @@ public abstract class ExpenseCategory<T extends Expense> implements Budgetable {
 	private double calculateSpendingForAllExpenses(Ledger ledger) {
 		double total = 0.0;
 		for (BookkeepingEntry entry : ledger.getEntries()) {
-			if (entry instanceof IncurredExpense ie) {
+			if (entry instanceof IncurredExpense ie && ie.getConcept() == this) {
 				total += ie.getActualSpending(ledger);
 			}
 		}

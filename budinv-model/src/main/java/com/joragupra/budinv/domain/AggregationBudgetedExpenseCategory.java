@@ -14,6 +14,11 @@ public class AggregationBudgetedExpenseCategory extends ExpenseCategory<Budgetab
 	public double getBudgetedAmount() {
 		return calculateBudgetForAllBudgetedElements();
 	}
+
+	@Override
+	public double getActualSpending(Ledger ledger) {
+		return expenses.stream().mapToDouble(b -> b.getActualSpending(ledger)).sum();
+	}
 	
 	private double calculateBudgetForAllBudgetedElements() {
 		return super.expenses.stream().mapToDouble(Budgetable::getBudgetedAmount).sum();
