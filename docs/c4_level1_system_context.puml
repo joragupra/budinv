@@ -1,0 +1,15 @@
+@startuml C4_Level1_SystemContext
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title System Context Diagram — BudInv
+
+Person(user, "End User", "A person tracking personal income\nand expenses via a web browser.")
+
+System(budinv, "BudInv", "Personal budget and expense tracking\napplication. Records income and expenses,\norganises them by category and type,\nand tracks budget deviations over time.")
+
+Rel(user, budinv, "Views ledger and budget data", "HTTPS / Browser")
+
+@enduml
