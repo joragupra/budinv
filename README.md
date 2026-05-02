@@ -18,17 +18,20 @@ Maven multi-module project:
 
 | Module | Contents |
 |---|---|
-| `budinv-model` | Domain model and business logic |
-| `budinv-controller` | Spring MVC REST controllers and DTOs |
+| `budinv-model` | Domain model (`domain/` package) and business logic |
+| `budinv-controller` | Spring MVC REST controllers, DTOs, and Java-based `@Configuration` classes |
 | `budinv-rest-services` | WAR packaging and servlet configuration |
-| `budinv-infrastructure` | JPA entities and Spring Data repositories |
+| `budinv-infrastructure` | JPA entities, Spring Data repositories, and Java-based persistence configuration |
 | `budinv-web` | AngularJS + Bootstrap frontend |
+
+Spring configuration is Java-based (`RestConfig`, `PersistenceConfig`) — there are no XML application context files.
 
 ## Tech stack
 
-- Java 21
-- Spring MVC (REST)
-- Spring Data JPA / Hibernate
+- Java 25
+- Spring MVC 6.2.7 (REST) — Jakarta EE namespace
+- Spring Data JPA 3.4.5 / Hibernate
+- Jackson (DTO mapping)
 - HSQLDB (in-memory, auto-schema)
 - AngularJS + Bootstrap (frontend)
 - Maven
@@ -41,6 +44,8 @@ mvn clean install
 
 Deploy the resulting WAR from `budinv-rest-services` to a servlet container (e.g. Tomcat).
 
+The build runs unit tests and enforces a minimum 50% JaCoCo code coverage threshold. CI runs the same check on every pull request.
+
 ## API
 
 | Method | Path | Description |
@@ -50,4 +55,4 @@ Deploy the resulting WAR from `budinv-rest-services` to a servlet container (e.g
 
 ## Status
 
-Early-stage / work in progress. The REST layer returns hardcoded data; persistence integration is partially wired.
+Early-stage / work in progress. Domain logic (ledger calculations, expense category aggregation, date-range filtering) is implemented and tested. The REST layer currently returns hardcoded data; full persistence integration is still in progress.
