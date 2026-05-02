@@ -1,0 +1,94 @@
+@startuml C4_Level3_Components
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
+
+title Component Diagram — REST API Container
+
+Person(user, "End User", "Accesses the application via a browser.")
+ContainerDb(database, "In-Memory Database", "HSQLDB 2.7.4", "Volatile in-memory relational store.")
+
+Container_Boundary(rest_api, "REST API — budinv-rest-services WAR") {
+
+    ' ---- Application layer ----
+
+    Component(ledger_resource, "LedgerResource", "Spring RestController", "Exposes GET /rest/ledger/hello and\n/rest/ledger/show/list.\nConstructs domain objects inline;\nrepository result is not yet used.")
+
+    Component(ledger_transformer, "LedgerTransformer", "Java mapper", "Converts domain Ledger and its\nBookkeepingEntries into DTO equivalents\nfor JSON / XML serialisation.")
+
+    Component(ledger_repo, "LedgerRepository", "Spring Data CrudRepository", "CRUD interface for the Ledger JPA entity.\nCurrently returns empty results\n(entity is a stub).")
+
+    ' ---- Domain model — budinv-model ----
+
+    Component(ledger, "Ledger", "class — aggregate root", "Time-bounded collection of bookkeeping\nentries kept in chronological order.\nCalculates income, expense and balance\nfor any date sub-range.\nHolds one Budget.")
+
+    Component(budget, "Budget", "class — value object", "Holds planned revenue (double) and one\nreference each to RegularExpense,\nIrregularExpense and VariableExpense.")
+
+    Component(bookkeeping_entry, "BookkeepingEntry", "abstract sealed class", "Base for all ledger entries.\nFields: id, logDate, incurredDate,\namount, comments.\nSealed — permits only Income and\nIncurredExpense.")
+
+    Component(income, "Income", "final class", "Bookkeeping entry for money received.\nNo fields beyond BookkeepingEntry.")
+
+    Component(incurred_expense, "IncurredExpense", "final class", "Bookkeeping entry for money spent.\nLinked to the ExpenseConcept that\nclassifies it.\nImplements Expense.")
+
+    Component(expense_iface, "Expense", "interface", "getActualSpending(Ledger) : double")
+
+    Component(budgetable_iface, "Budgetable", "interface — extends Expense", "Adds budget awareness to Expense.\ngetBudgetedAmount() : double\ncalculateDeviation(Ledger) : double")
+
+    Component(expense_category, "ExpenseCategory", "abstract class — implements Budgetable", "Generic named group of T extends Expense.\nManages a Set of T.\nSums actual spending of members.\nDeviation = budgetedAmount - actualSpending.")
+
+    Component(directly_budgeted, "DirectlyBudgetedExpenseCategory", "abstract class — extends ExpenseCategory", "ExpenseCategory backed by an explicit\nnumeric budget amount.")
+
+    Component(aggregation_budgeted, "AggregationBudgetedExpenseCategory", "abstract class — extends ExpenseCategory", "ExpenseCategory whose budget and\nactual spending are sums across\nall child Budgetable items.")
+
+    Component(expense_concept, "ExpenseConcept", "class — extends DirectlyBudgetedExpenseCategory", "Leaf-level named category\n(e.g. Car insurance).\nHolds an explicit budget.\nBelongs to one ExpenseType and\nregisters itself on it at construction.")
+
+    Component(expense_type, "ExpenseType", "class — extends AggregationBudgetedExpenseCategory", "Groups one or more ExpenseConcepts.\nBudget = sum of concepts budgets.\nExposes registerConcept() /\nunregisterConcept().")
+
+    Component(regular_expense, "RegularExpense", "class — extends ExpenseType", "Known, scheduled expenses\n(e.g. rent, subscriptions).")
+
+    Component(irregular_expense, "IrregularExpense", "class — extends ExpenseType", "Known but unscheduled expenses\n(e.g. car repair).")
+
+    Component(variable_expense, "VariableExpense", "class — extends ExpenseType", "Discretionary or uncertain expenses.")
+}
+
+' ---- Application-layer relationships ----
+Rel(user, ledger_resource, "HTTP request", "JSON / XML over HTTPS")
+Rel(ledger_resource, ledger_transformer, "passes domain Ledger to")
+Rel(ledger_resource, ledger_repo, "calls findAll()")
+Rel(ledger_resource, ledger, "constructs and reads")
+Rel(ledger_repo, database, "reads / writes", "JPA / JDBC")
+
+' ---- Ledger aggregate ----
+Rel(ledger, budget, "has one")
+Rel(ledger, bookkeeping_entry, "contains ordered List")
+
+' ---- Bookkeeping entry hierarchy ----
+Rel(income, bookkeeping_entry, "extends (sealed)")
+Rel(incurred_expense, bookkeeping_entry, "extends (sealed)")
+Rel(incurred_expense, expense_iface, "implements")
+Rel(incurred_expense, expense_concept, "classified by")
+
+' ---- Budget to concrete expense types ----
+Rel(budget, regular_expense, "references")
+Rel(budget, irregular_expense, "references")
+Rel(budget, variable_expense, "references")
+
+' ---- Concrete expense type hierarchy ----
+Rel(regular_expense, expense_type, "extends")
+Rel(irregular_expense, expense_type, "extends")
+Rel(variable_expense, expense_type, "extends")
+Rel(expense_type, aggregation_budgeted, "extends")
+Rel(expense_type, expense_concept, "aggregates Set")
+
+' ---- Expense concept to category hierarchy ----
+Rel(expense_concept, directly_budgeted, "extends")
+Rel(directly_budgeted, expense_category, "extends")
+Rel(aggregation_budgeted, expense_category, "extends")
+
+' ---- Domain contracts ----
+Rel(expense_category, budgetable_iface, "implements")
+Rel(budgetable_iface, expense_iface, "extends")
+
+@enduml
