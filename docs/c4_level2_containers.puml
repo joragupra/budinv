@@ -1,0 +1,25 @@
+@startuml C4_Level2_Containers
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Container Diagram — BudInv
+
+Person(user, "End User", "A person tracking personal income\nand expenses via a web browser.")
+
+System_Boundary(budinv, "BudInv") {
+
+    Container(web_app, "Web Application", "AngularJS 1.0.5, Bootstrap\n[WAR — budinv-web]", "Delivers the single-page application\nto the user's browser. Provides views\nfor budgets and expense navigation\norganised by year and expense type.")
+
+    Container(rest_api, "REST API", "Java 25, Spring MVC 6.2.7\n[WAR — budinv-rest-services]", "Exposes REST endpoints under /rest/*.\nEncapsulates domain logic (ledger,\nbudget, bookkeeping entries) and\nDTO transformation. Manages JPA\npersistence via Spring Data repositories.\n\nIncludes modules:\n· budinv-controller (HTTP layer, DTOs)\n· budinv-model (domain + business logic)\n· budinv-infrastructure (JPA, repositories)")
+
+    ContainerDb(database, "In-Memory Database", "HSQLDB 2.7.4\n[Embedded — volatile]", "Stores ledger and bookkeeping entry\nrecords. Schema auto-generated from\nJPA entities at startup. Data is lost\non application restart.")
+
+}
+
+Rel(user, web_app, "Accesses budget and ledger views", "HTTPS")
+Rel(web_app, rest_api, "Fetches ledger and budget data", "HTTP / JSON")
+Rel(rest_api, database, "Reads and writes ledger entries", "JDBC / JPA (Hibernate 6)")
+
+@enduml
