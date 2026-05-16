@@ -1,5 +1,6 @@
 package com.joragupra.budinv.config;
 
+import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -35,6 +36,7 @@ public class PersistenceConfig {
 		var adapter = new HibernateJpaVendorAdapter();
 		adapter.setGenerateDdl(true);
 		factory.setJpaVendorAdapter(adapter);
+		factory.setEntityManagerFactoryInterface(EntityManagerFactory.class);
 		var props = new Properties();
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
 		factory.setJpaProperties(props);
