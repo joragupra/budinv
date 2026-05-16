@@ -42,7 +42,7 @@ Spring configuration is Java-based (`RestConfig`, `PersistenceConfig`) — there
 mvn clean install
 ```
 
-The build runs unit tests and enforces a minimum 50% JaCoCo code coverage threshold. CI runs the same check on every pull request.
+The build runs unit tests, enforces a minimum 50% JaCoCo code coverage threshold on the domain module, and checks seven ArchUnit architectural rules. CI runs the same checks on every pull request.
 
 ## Running locally
 
