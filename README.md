@@ -42,9 +42,22 @@ Spring configuration is Java-based (`RestConfig`, `PersistenceConfig`) — there
 mvn clean install
 ```
 
-Deploy the resulting WAR from `budinv-rest-services` to a servlet container (e.g. Tomcat).
-
 The build runs unit tests and enforces a minimum 50% JaCoCo code coverage threshold. CI runs the same check on every pull request.
+
+## Running locally
+
+```bash
+mvn install -DskipTests && mvn cargo:run -pl budinv-rest-services
+```
+
+This starts an embedded Tomcat 11 on port 8080 with both WARs deployed:
+
+| Application | URL |
+|---|---|
+| REST API | `http://localhost:8080/budinv-services/rest/` |
+| Frontend | `http://localhost:8080/budinv-web/` |
+
+Stop the server with `Ctrl-C`.
 
 ## API
 
