@@ -46,6 +46,7 @@
               <groupId>com.joragupra.budinv</groupId>
               <artifactId>budinv-web</artifactId>
               <type>war</type>
+              <location>${project.basedir}/../budinv-web/target/budinv-web.war</location>
             </deployable>
           </deployables>
         </configuration>
@@ -73,13 +74,6 @@
     <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.joragupra.budinv</groupId>
-      <artifactId>budinv-web</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
       <scope>provided</scope>
     </dependency>
   </dependencies>
