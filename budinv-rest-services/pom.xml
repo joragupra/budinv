@@ -21,6 +21,36 @@
 
   <build>
     <finalName>budinv-services</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven3-plugin</artifactId>
+        <version>${cargo.version}</version>
+        <configuration>
+          <container>
+            <containerId>tomcat11x</containerId>
+            <type>embedded</type>
+          </container>
+          <configuration>
+            <properties>
+              <cargo.servlet.port>8080</cargo.servlet.port>
+            </properties>
+          </configuration>
+          <deployables>
+            <deployable>
+              <groupId>com.joragupra.budinv</groupId>
+              <artifactId>budinv-rest-services</artifactId>
+              <type>war</type>
+            </deployable>
+            <deployable>
+              <groupId>com.joragupra.budinv</groupId>
+              <artifactId>budinv-web</artifactId>
+              <type>war</type>
+            </deployable>
+          </deployables>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
   <dependencies>
@@ -43,6 +73,13 @@
     <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.joragupra.budinv</groupId>
+      <artifactId>budinv-web</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
       <scope>provided</scope>
     </dependency>
   </dependencies>
