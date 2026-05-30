@@ -1,6 +1,6 @@
 # budinv
 
-A personal budget and expense tracking web application.
+A personal budget and expense tracking application — available as a web app and a native Android app.
 
 ## What it does
 
@@ -14,7 +14,9 @@ A personal budget and expense tracking web application.
 
 ## Architecture
 
-Maven multi-module project:
+The monorepo contains six modules: five Maven modules for the backend and web frontend, and one Gradle module for the Android app. The Android module is a sibling directory — it is not part of the Maven build.
+
+### Backend & web (Maven)
 
 | Module | Contents |
 |---|---|
@@ -26,17 +28,33 @@ Maven multi-module project:
 
 Spring configuration is Java-based (`RestConfig`, `PersistenceConfig`) — there are no XML application context files.
 
+### Android (`budinv-android/`)
+
+Native Android app built with Kotlin and Jetpack Compose. Uses the domain model directly (bundled JAR) with in-memory storage — no backend required to run the app.
+
 ## Tech stack
 
+### Backend
 - Java 25
 - Spring MVC 6.2.7 (REST) — Jakarta EE namespace
 - Spring Data JPA 3.4.5 / Hibernate
 - Jackson (DTO mapping)
 - HSQLDB (in-memory, auto-schema)
-- AngularJS + Bootstrap (frontend)
 - Maven
 
+### Web frontend
+- AngularJS + Bootstrap
+
+### Android
+- Kotlin 2.1 + Jetpack Compose (Material 3)
+- Domain model from `budinv-model` (bundled JAR, in-memory storage)
+- MVVM with StateFlow
+- Min SDK: Android 8.0 (API 26)
+- Gradle 8.10
+
 ## Build
+
+### Backend
 
 ```bash
 mvn clean install
@@ -44,7 +62,19 @@ mvn clean install
 
 The build runs unit tests, enforces a minimum 50% JaCoCo code coverage threshold on the domain module, and checks seven ArchUnit architectural rules. CI runs the same checks on every pull request.
 
+### Android
+
+**Prerequisite:** Android SDK — install via [Android Studio](https://developer.android.com/studio) and set `ANDROID_HOME`.
+
+```bash
+cd budinv-android
+./gradlew assembleDebug   # build APK
+./gradlew test            # run unit tests
+```
+
 ## Running locally
+
+### Backend + web frontend
 
 ```bash
 mvn install -DskipTests && mvn cargo:run -pl budinv-rest-services
@@ -58,6 +88,18 @@ This starts an embedded Tomcat 11 on port 8080 with both WARs deployed:
 | Frontend | `http://localhost:8080/budinv-web/` |
 
 Stop the server with `Ctrl-C`.
+
+### Android app
+
+The app runs standalone — no backend required. Build the APK and install it:
+
+```bash
+cd budinv-android
+./gradlew assembleDebug
+adb install app/build/outputs/apk/debug/app-debug.apk
+```
+
+> **Note:** Data is held in memory and is lost when the app process is killed. Persistence and backend integration are planned for a future release.
 
 ## API
 
