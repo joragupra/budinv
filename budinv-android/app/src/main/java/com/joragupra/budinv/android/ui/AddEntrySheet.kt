@@ -35,6 +35,8 @@ fun AddEntrySheet(onDismiss: () -> Unit, onConfirm: (EntryType, Double, String?)
     var comments by remember { mutableStateOf("") }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
+    val amount = amountText.replace(',', '.').toDoubleOrNull()
+
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
         Column(
             modifier = Modifier
@@ -59,6 +61,10 @@ fun AddEntrySheet(onDismiss: () -> Unit, onConfirm: (EntryType, Double, String?)
                 value = amountText,
                 onValueChange = { amountText = it },
                 label = { Text("Amount") },
+                isError = amountText.isNotEmpty() && amount == null,
+                supportingText = {
+                    if (amountText.isNotEmpty() && amount == null) Text("Enter a valid number")
+                },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -76,10 +82,8 @@ fun AddEntrySheet(onDismiss: () -> Unit, onConfirm: (EntryType, Double, String?)
             ) {
                 TextButton(onClick = onDismiss) { Text("Cancel") }
                 Button(
-                    onClick = {
-                        val amount = amountText.toDoubleOrNull() ?: return@Button
-                        onConfirm(selectedType, amount, comments.ifBlank { null })
-                    },
+                    onClick = { if (amount != null) onConfirm(selectedType, amount, comments.ifBlank { null }) },
+                    enabled = amount != null,
                     modifier = Modifier.padding(start = 8.dp),
                 ) { Text("Save") }
             }

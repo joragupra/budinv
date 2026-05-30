@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.joragupra.budinv.domain.BookkeepingEntry
 import com.joragupra.budinv.domain.Income
+import com.joragupra.budinv.domain.IncurredExpense
 import com.joragupra.budinv.domain.Ledger
 import java.time.LocalDate
 
@@ -98,21 +99,25 @@ private fun LedgerContent(ledger: Ledger) {
 
 @Composable
 private fun SummaryCard(ledger: Ledger) {
+    val income = ledger.entries.filterIsInstance<Income>().sumOf { it.amount }
+    val expense = ledger.entries.filterIsInstance<IncurredExpense>().sumOf { it.amount }
+    val balance = income - expense
+
     Card(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text("Period: ${ledger.from} → ${ledger.to}", style = MaterialTheme.typography.bodySmall)
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text("Income", color = Color(0xFF2E7D32))
-                Text("%.2f".format(ledger.calculateIncome()), color = Color(0xFF2E7D32))
+                Text("%.2f".format(income), color = Color(0xFF2E7D32))
             }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text("Expenses", color = Color(0xFFC62828))
-                Text("%.2f".format(ledger.calculateExpense()), color = Color(0xFFC62828))
+                Text("%.2f".format(expense), color = Color(0xFFC62828))
             }
             HorizontalDivider()
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text("Balance", style = MaterialTheme.typography.titleMedium)
-                Text("%.2f".format(ledger.calculateBalance()), style = MaterialTheme.typography.titleMedium)
+                Text("%.2f".format(balance), style = MaterialTheme.typography.titleMedium)
             }
         }
     }
