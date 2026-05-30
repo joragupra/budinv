@@ -16,7 +16,7 @@ import java.time.LocalDate
 
 sealed class LedgerUiState {
     data object Loading : LedgerUiState()
-    data class Success(val ledger: Ledger) : LedgerUiState()
+    class Success(val ledger: Ledger) : LedgerUiState()
     data class Error(val message: String) : LedgerUiState()
 }
 
