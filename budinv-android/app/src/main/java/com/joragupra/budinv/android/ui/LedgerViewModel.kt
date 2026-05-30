@@ -1,6 +1,5 @@
 package com.joragupra.budinv.android.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joragupra.budinv.android.api.LedgerApi
@@ -36,7 +35,6 @@ class LedgerViewModel(private val api: LedgerApi) : ViewModel() {
                 LedgerUiState.Success(api.getLedger())
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
-                Log.e("LedgerViewModel", "Failed to load ledger", e)
                 LedgerUiState.Error("Unable to load budget data. Please try again.")
             }
         }
