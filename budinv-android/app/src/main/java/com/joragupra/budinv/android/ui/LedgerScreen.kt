@@ -9,11 +9,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,6 +25,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,14 +35,21 @@ import androidx.compose.ui.unit.dp
 import com.joragupra.budinv.domain.BookkeepingEntry
 import com.joragupra.budinv.domain.Income
 import com.joragupra.budinv.domain.Ledger
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LedgerScreen(viewModel: LedgerViewModel) {
     val state by viewModel.uiState.collectAsState()
+    var showAddSheet by remember { mutableStateOf(false) }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("BudInv Ledger") }) }
+        topBar = { TopAppBar(title = { Text("BudInv Ledger") }) },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { showAddSheet = true }) {
+                Icon(Icons.Default.Add, contentDescription = "Add entry")
+            }
+        },
     ) { padding ->
         Box(
             modifier = Modifier
@@ -48,6 +62,19 @@ fun LedgerScreen(viewModel: LedgerViewModel) {
                 is LedgerUiState.Success -> LedgerContent(ledger = s.ledger)
             }
         }
+    }
+
+    if (showAddSheet) {
+        AddEntrySheet(
+            onDismiss = { showAddSheet = false },
+            onConfirm = { type, amount, comments ->
+                when (type) {
+                    EntryType.Income -> viewModel.addIncome(amount, LocalDate.now(), comments)
+                    EntryType.Expense -> viewModel.addExpense(amount, LocalDate.now(), comments)
+                }
+                showAddSheet = false
+            },
+        )
     }
 }
 
