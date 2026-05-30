@@ -30,7 +30,7 @@ Spring configuration is Java-based (`RestConfig`, `PersistenceConfig`) — there
 
 ### Android (`budinv-android/`)
 
-Native Android app built with Kotlin and Jetpack Compose. Calls the same REST API as the web frontend.
+Native Android app built with Kotlin and Jetpack Compose. Uses the domain model directly (bundled JAR) with in-memory storage — no backend required to run the app.
 
 ## Tech stack
 
@@ -47,7 +47,7 @@ Native Android app built with Kotlin and Jetpack Compose. Calls the same REST AP
 
 ### Android
 - Kotlin 2.1 + Jetpack Compose (Material 3)
-- Retrofit 2 + Moshi (REST client)
+- Domain model from `budinv-model` (bundled JAR, in-memory storage)
 - MVVM with StateFlow
 - Min SDK: Android 8.0 (API 26)
 - Gradle 8.10
@@ -91,18 +91,15 @@ Stop the server with `Ctrl-C`.
 
 ### Android app
 
-With the backend running and an emulator started:
+The app runs standalone — no backend required. Build the APK and install it:
 
 ```bash
 cd budinv-android
+./gradlew assembleDebug
 adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
-The emulator reaches the backend at `http://10.0.2.2:8080/` (Android's alias for host `localhost`). For a physical device, add your machine's IP to `budinv-android/local.properties`:
-
-```properties
-BASE_URL=http://<your-machine-ip>:8080/budinv-services/rest/
-```
+> **Note:** Data is held in memory and is lost when the app process is killed. Persistence and backend integration are planned for a future release.
 
 ## API
 
