@@ -46,27 +46,37 @@ class LedgerViewModel(private val repository: LedgerRepository) : ViewModel() {
 
     fun addIncome(amount: Double, date: LocalDate, comments: String?) {
         viewModelScope.launch {
-            val entry = Income().apply {
-                setAmount(amount)
-                setIncurredDate(date)
-                setLogDate(date)
-                setComments(comments)
+            _uiState.value = try {
+                val entry = Income().apply {
+                    setAmount(amount)
+                    setIncurredDate(date)
+                    setLogDate(date)
+                    setComments(comments)
+                }
+                repository.addEntry(entry)
+                LedgerUiState.Success(repository.getLedger())
+            } catch (e: Exception) {
+                if (e is CancellationException) throw e
+                LedgerUiState.Error("Failed to save income entry. Please try again.")
             }
-            repository.addEntry(entry)
-            _uiState.value = LedgerUiState.Success(repository.getLedger())
         }
     }
 
     fun addExpense(amount: Double, date: LocalDate, comments: String?) {
         viewModelScope.launch {
-            val entry = IncurredExpense(ExpenseConcept("Miscellaneous")).apply {
-                setAmount(amount)
-                setIncurredDate(date)
-                setLogDate(date)
-                setComments(comments)
+            _uiState.value = try {
+                val entry = IncurredExpense(ExpenseConcept("Miscellaneous")).apply {
+                    setAmount(amount)
+                    setIncurredDate(date)
+                    setLogDate(date)
+                    setComments(comments)
+                }
+                repository.addEntry(entry)
+                LedgerUiState.Success(repository.getLedger())
+            } catch (e: Exception) {
+                if (e is CancellationException) throw e
+                LedgerUiState.Error("Failed to save expense entry. Please try again.")
             }
-            repository.addEntry(entry)
-            _uiState.value = LedgerUiState.Success(repository.getLedger())
         }
     }
 }

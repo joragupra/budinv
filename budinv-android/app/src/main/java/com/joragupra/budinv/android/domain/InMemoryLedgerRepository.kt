@@ -5,12 +5,17 @@ import com.joragupra.budinv.domain.Ledger
 import java.time.LocalDate
 
 class InMemoryLedgerRepository : LedgerRepository {
-    private val now = LocalDate.now()
-    private val ledger = Ledger(now.withDayOfMonth(1), now)
+    private val from = LocalDate.now().withDayOfMonth(1)
+    private val to = LocalDate.now()
+    private val entries = mutableListOf<BookkeepingEntry>()
 
-    override fun getLedger(): Ledger = ledger
+    override fun getLedger(): Ledger {
+        val ledger = Ledger(from, to)
+        entries.forEach { ledger.bookEntry(it) }
+        return ledger
+    }
 
     override fun addEntry(entry: BookkeepingEntry) {
-        ledger.bookEntry(entry)
+        entries.add(entry)
     }
 }

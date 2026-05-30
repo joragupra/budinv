@@ -115,8 +115,48 @@ class LedgerViewModelTest {
         assertEquals("Groceries", state.ledger.entries[0].comments)
     }
 
+    @Test
+    fun shouldEmitErrorWhenAddExpenseFailsInRepository() = runTest {
+        val viewModel = LedgerViewModel(AddEntryFailingLedgerRepository())
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        viewModel.uiState.test {
+            awaitItem() // current Success state
+
+            viewModel.addExpense(200.0, LocalDate.now(), "Groceries")
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            val error = awaitItem() as LedgerUiState.Error
+            assertEquals("Failed to save expense entry. Please try again.", error.message)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun shouldEmitErrorWhenAddIncomeFailsInRepository() = runTest {
+        val viewModel = LedgerViewModel(AddEntryFailingLedgerRepository())
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        viewModel.uiState.test {
+            awaitItem() // current Success state
+
+            viewModel.addIncome(1500.0, LocalDate.now(), null)
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            val error = awaitItem() as LedgerUiState.Error
+            assertEquals("Failed to save income entry. Please try again.", error.message)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
     private class FailingLedgerRepository : LedgerRepository {
         override fun getLedger(): Ledger = throw RuntimeException("Storage error")
+        override fun addEntry(entry: BookkeepingEntry) = throw RuntimeException("Storage error")
+    }
+
+    private class AddEntryFailingLedgerRepository : LedgerRepository {
+        private val delegate = InMemoryLedgerRepository()
+        override fun getLedger(): Ledger = delegate.getLedger()
         override fun addEntry(entry: BookkeepingEntry) = throw RuntimeException("Storage error")
     }
 }
