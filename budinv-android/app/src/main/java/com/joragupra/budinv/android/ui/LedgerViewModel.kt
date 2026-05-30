@@ -1,9 +1,11 @@
 package com.joragupra.budinv.android.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joragupra.budinv.android.api.LedgerApi
 import com.joragupra.budinv.android.api.LedgerDto
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -29,6 +31,8 @@ class LedgerViewModel(private val api: LedgerApi) : ViewModel() {
             _uiState.value = try {
                 LedgerUiState.Success(api.getLedger())
             } catch (e: Exception) {
+                if (e is CancellationException) throw e
+                Log.e("LedgerViewModel", "Failed to load ledger", e)
                 LedgerUiState.Error(e.message ?: "Unknown error")
             }
         }
