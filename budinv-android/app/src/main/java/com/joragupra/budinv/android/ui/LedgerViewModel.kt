@@ -2,8 +2,8 @@ package com.joragupra.budinv.android.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joragupra.budinv.android.api.LedgerApi
-import com.joragupra.budinv.android.api.LedgerDto
+import com.joragupra.budinv.android.domain.LedgerRepository
+import com.joragupra.budinv.domain.Ledger
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,11 +12,11 @@ import kotlinx.coroutines.launch
 
 sealed class LedgerUiState {
     data object Loading : LedgerUiState()
-    data class Success(val ledger: LedgerDto) : LedgerUiState()
+    data class Success(val ledger: Ledger) : LedgerUiState()
     data class Error(val message: String) : LedgerUiState()
 }
 
-class LedgerViewModel(private val api: LedgerApi) : ViewModel() {
+class LedgerViewModel(private val repository: LedgerRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow<LedgerUiState>(LedgerUiState.Loading)
     val uiState: StateFlow<LedgerUiState> = _uiState
@@ -32,7 +32,7 @@ class LedgerViewModel(private val api: LedgerApi) : ViewModel() {
         _uiState.value = LedgerUiState.Loading
         loadJob = viewModelScope.launch {
             _uiState.value = try {
-                LedgerUiState.Success(api.getLedger())
+                LedgerUiState.Success(repository.getLedger())
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
                 LedgerUiState.Error("Unable to load budget data. Please try again.")

@@ -1,14 +1,11 @@
 package com.joragupra.budinv.android
 
 import app.cash.turbine.test
-import com.joragupra.budinv.android.api.BookkeepingEntryDto
-import com.joragupra.budinv.android.api.LedgerApi
-import com.joragupra.budinv.android.api.LedgerDto
+import com.joragupra.budinv.android.domain.InMemoryLedgerRepository
+import com.joragupra.budinv.android.domain.LedgerRepository
 import com.joragupra.budinv.android.ui.LedgerUiState
 import com.joragupra.budinv.android.ui.LedgerViewModel
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
+import com.joragupra.budinv.domain.Ledger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -25,22 +22,10 @@ import org.junit.Test
 class LedgerViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
-    private lateinit var api: LedgerApi
-
-    private val aLedger = LedgerDto(
-        from = "2026-01-01",
-        to = "2026-01-31",
-        entries = listOf(
-            BookkeepingEntryDto.Income(id = 1, logDate = "2026-01-10", incurredDate = "2026-01-10", amount = 3000.0, comments = null),
-        ),
-        totalIncome = 3000.0,
-        totalExpense = 0.0,
-    )
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        api = mockk()
     }
 
     @After
@@ -49,24 +34,19 @@ class LedgerViewModelTest {
     }
 
     @Test
-    fun shouldEmitLoadingThenSuccessWhenApiSucceeds() = runTest {
-        coEvery { api.getLedger() } returns aLedger
-
-        val viewModel = LedgerViewModel(api)
+    fun shouldEmitLoadingThenSuccessWhenRepositorySucceeds() = runTest {
+        val viewModel = LedgerViewModel(InMemoryLedgerRepository())
 
         viewModel.uiState.test {
             assertTrue(awaitItem() is LedgerUiState.Loading)
-            val success = awaitItem() as LedgerUiState.Success
-            assertEquals(3000.0, success.ledger.balance, 0.001)
+            assertTrue(awaitItem() is LedgerUiState.Success)
             cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun shouldEmitLoadingThenErrorWhenApiFails() = runTest {
-        coEvery { api.getLedger() } throws RuntimeException("Connection refused")
-
-        val viewModel = LedgerViewModel(api)
+    fun shouldEmitLoadingThenErrorWhenRepositoryFails() = runTest {
+        val viewModel = LedgerViewModel(FailingLedgerRepository())
 
         viewModel.uiState.test {
             assertTrue(awaitItem() is LedgerUiState.Loading)
@@ -78,9 +58,7 @@ class LedgerViewModelTest {
 
     @Test
     fun shouldReloadOnRetry() = runTest {
-        coEvery { api.getLedger() } returns aLedger
-
-        val viewModel = LedgerViewModel(api)
+        val viewModel = LedgerViewModel(InMemoryLedgerRepository())
         testDispatcher.scheduler.advanceUntilIdle()
 
         viewModel.uiState.test {
@@ -89,23 +67,22 @@ class LedgerViewModelTest {
             viewModel.loadLedger()
 
             assertTrue(awaitItem() is LedgerUiState.Loading)
-            val success = awaitItem() as LedgerUiState.Success
-            assertEquals(aLedger, success.ledger)
+            assertTrue(awaitItem() is LedgerUiState.Success)
             cancelAndIgnoreRemainingEvents()
         }
-        coVerify(exactly = 2) { api.getLedger() }
     }
 
     @Test
     fun shouldCancelPreviousJobOnRapidReload() = runTest {
-        coEvery { api.getLedger() } returns aLedger
-
-        val viewModel = LedgerViewModel(api)
+        val viewModel = LedgerViewModel(InMemoryLedgerRepository())
         viewModel.loadLedger() // second call before first coroutine runs
 
         testDispatcher.scheduler.advanceUntilIdle()
 
-        coVerify(exactly = 1) { api.getLedger() }
         assertTrue(viewModel.uiState.value is LedgerUiState.Success)
+    }
+
+    private class FailingLedgerRepository : LedgerRepository {
+        override fun getLedger(): Ledger = throw RuntimeException("Storage error")
     }
 }

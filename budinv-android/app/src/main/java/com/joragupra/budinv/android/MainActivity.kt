@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.joragupra.budinv.android.api.RetrofitClient
+import com.joragupra.budinv.android.domain.InMemoryLedgerRepository
 import com.joragupra.budinv.android.theme.BudInvTheme
 import com.joragupra.budinv.android.ui.LedgerScreen
 import com.joragupra.budinv.android.ui.LedgerViewModel
@@ -34,6 +34,6 @@ private class LedgerViewModelFactory : ViewModelProvider.Factory {
             throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
         @Suppress("UNCHECKED_CAST")
-        return LedgerViewModel(RetrofitClient.ledgerApi) as T
+        return LedgerViewModel(InMemoryLedgerRepository()) as T
     }
 }
