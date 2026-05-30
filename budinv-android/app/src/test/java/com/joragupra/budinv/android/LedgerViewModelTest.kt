@@ -35,7 +35,6 @@ class LedgerViewModelTest {
         ),
         totalIncome = 3000.0,
         totalExpense = 0.0,
-        balance = 3000.0,
     )
 
     @Before
@@ -94,6 +93,7 @@ class LedgerViewModelTest {
             assertEquals(aLedger, success.ledger)
             cancelAndIgnoreRemainingEvents()
         }
+        coVerify(exactly = 2) { api.getLedger() }
     }
 
     @Test

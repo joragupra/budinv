@@ -1,6 +1,5 @@
 package com.joragupra.budinv.android.api
 
-import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
@@ -10,8 +9,9 @@ data class LedgerDto(
     val entries: List<BookkeepingEntryDto>,
     val totalIncome: Double,
     val totalExpense: Double,
-    val balance: Double,
-)
+) {
+    val balance: Double get() = totalIncome - totalExpense
+}
 
 sealed class BookkeepingEntryDto {
     abstract val id: Long?
@@ -28,8 +28,9 @@ sealed class BookkeepingEntryDto {
         override val incurredDate: String,
         override val amount: Double,
         override val comments: String?,
-        @Json(name = "entryType") override val entryType: String = "INCOME",
-    ) : BookkeepingEntryDto()
+    ) : BookkeepingEntryDto() {
+        override val entryType: String get() = "INCOME"
+    }
 
     @JsonClass(generateAdapter = true)
     data class IncurredExpense(
@@ -38,6 +39,7 @@ sealed class BookkeepingEntryDto {
         override val incurredDate: String,
         override val amount: Double,
         override val comments: String?,
-        @Json(name = "entryType") override val entryType: String = "EXPENSE",
-    ) : BookkeepingEntryDto()
+    ) : BookkeepingEntryDto() {
+        override val entryType: String get() = "EXPENSE"
+    }
 }
