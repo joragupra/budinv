@@ -1,5 +1,7 @@
 package com.joragupra.budinv.domain;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,6 +19,33 @@ class AggregationBudgetedExpenseCategoryTest {
 		ExpenseConcept food = new ExpenseConcept("Food", 300.0);
 		category.addExpense(food);
 		assertEquals(300.0, category.getBudgetedAmount());
+	}
+
+	@Test
+	void getActualSpending_noExpenses_returnsZero() {
+		AggregationBudgetedExpenseCategory category = new AggregationBudgetedExpenseCategory("All expenses");
+		assertEquals(0.0, category.getActualSpending(new Ledger()));
+	}
+
+	@Test
+	void getActualSpending_sumsSpendingAcrossChildConcepts() {
+		ExpenseConcept food = new ExpenseConcept("Food", 300.0);
+		ExpenseConcept transport = new ExpenseConcept("Transport", 100.0);
+		AggregationBudgetedExpenseCategory category = new AggregationBudgetedExpenseCategory("All expenses");
+		category.addExpense(food);
+		category.addExpense(transport);
+
+		Ledger ledger = new Ledger();
+		IncurredExpense e1 = new IncurredExpense(food);
+		e1.setAmount(200.0);
+		e1.setIncurredDate(LocalDate.of(2024, 1, 10));
+		IncurredExpense e2 = new IncurredExpense(transport);
+		e2.setAmount(80.0);
+		e2.setIncurredDate(LocalDate.of(2024, 1, 15));
+		ledger.bookEntry(e1);
+		ledger.bookEntry(e2);
+
+		assertEquals(280.0, category.getActualSpending(ledger));
 	}
 
 	@Test

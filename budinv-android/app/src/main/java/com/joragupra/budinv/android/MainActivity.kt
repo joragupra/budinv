@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.joragupra.budinv.android.api.RetrofitClient
+import com.joragupra.budinv.android.domain.InMemoryLedgerRepository
 import com.joragupra.budinv.android.theme.BudInvTheme
 import com.joragupra.budinv.android.ui.LedgerScreen
 import com.joragupra.budinv.android.ui.LedgerViewModel
@@ -28,8 +28,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private class LedgerViewModelFactory : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        LedgerViewModel(RetrofitClient.ledgerApi) as T
+internal class LedgerViewModelFactory : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (!modelClass.isAssignableFrom(LedgerViewModel::class.java)) {
+            throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+        }
+        @Suppress("UNCHECKED_CAST")
+        return LedgerViewModel(InMemoryLedgerRepository()) as T
+    }
 }

@@ -74,6 +74,20 @@ class ExpenseCategoryTest {
 	}
 
 	@Test
+	void setName_and_getName() {
+		DirectlyBudgetedExpenseCategory category = new DirectlyBudgetedExpenseCategory("Transport");
+		category.setName("Housing");
+		assertEquals("Housing", category.getName());
+	}
+
+	@Test
+	void setExpenseCategoryCode_and_getExpenseCategoryCode() {
+		DirectlyBudgetedExpenseCategory category = new DirectlyBudgetedExpenseCategory("Transport");
+		category.setExpenseCategoryCode("T001");
+		assertEquals("T001", category.getExpenseCategoryCode());
+	}
+
+	@Test
 	void calculateDeviation_negativeMeansOverBudget() {
 		ExpenseConcept category = new ExpenseConcept("Transport");
 		category.setBudgetedAmount(100.0);
