@@ -7,6 +7,7 @@ import com.joragupra.budinv.android.api.LedgerDto
 import com.joragupra.budinv.android.ui.LedgerUiState
 import com.joragupra.budinv.android.ui.LedgerViewModel
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -71,7 +72,7 @@ class LedgerViewModelTest {
         viewModel.uiState.test {
             assertTrue(awaitItem() is LedgerUiState.Loading)
             val error = awaitItem() as LedgerUiState.Error
-            assertTrue(error.message.contains("Connection refused"))
+            assertEquals("Unable to load budget data. Please try again.", error.message)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -93,5 +94,18 @@ class LedgerViewModelTest {
             assertEquals(aLedger, success.ledger)
             cancelAndIgnoreRemainingEvents()
         }
+    }
+
+    @Test
+    fun shouldCancelPreviousJobOnRapidReload() = runTest {
+        coEvery { api.getLedger() } returns aLedger
+
+        val viewModel = LedgerViewModel(api)
+        viewModel.loadLedger() // second call before first coroutine runs
+
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        coVerify(exactly = 1) { api.getLedger() }
+        assertTrue(viewModel.uiState.value is LedgerUiState.Success)
     }
 }

@@ -29,7 +29,11 @@ class MainActivity : ComponentActivity() {
 }
 
 private class LedgerViewModelFactory : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        LedgerViewModel(RetrofitClient.ledgerApi) as T
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (!modelClass.isAssignableFrom(LedgerViewModel::class.java)) {
+            throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+        }
+        @Suppress("UNCHECKED_CAST")
+        return LedgerViewModel(RetrofitClient.ledgerApi) as T
+    }
 }

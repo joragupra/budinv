@@ -2,6 +2,7 @@ package com.joragupra.budinv.android
 
 import com.joragupra.budinv.android.api.BookkeepingEntryDto
 import com.joragupra.budinv.android.api.LedgerDto
+import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -9,6 +10,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.junit.Assert.assertThrows
 
 class LedgerDtoDeserializationTest {
 
@@ -92,6 +94,32 @@ class LedgerDtoDeserializationTest {
 
         assertTrue(ledger.entries.isEmpty())
         assertEquals(0.0, ledger.balance, 0.001)
+    }
+
+    @Test
+    fun shouldThrowOnUnknownEntryType() {
+        val json = """
+            {
+              "from": "2026-01-01",
+              "to": "2026-01-31",
+              "entries": [
+                {
+                  "id": 1,
+                  "logDate": "2026-01-10",
+                  "incurredDate": "2026-01-10",
+                  "amount": 1000.0,
+                  "comments": null,
+                  "entryType": "TRANSFER"
+                }
+              ],
+              "totalIncome": 1000.0,
+              "totalExpense": 0.0,
+              "balance": 1000.0
+            }
+        """.trimIndent()
+
+        val adapter = moshi.adapter(LedgerDto::class.java)
+        assertThrows(JsonDataException::class.java) { adapter.fromJson(json) }
     }
 
     @Test
