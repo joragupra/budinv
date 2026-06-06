@@ -9,8 +9,10 @@ permissions:
 
 jobs:
   test:
-    name: Tests & Coverage
+    name: Maven — Build & Test
     runs-on: ubuntu-latest
+    outputs:
+      maven-report-url: ${{ steps.upload-maven-coverage.outputs.artifact-url }}
 
     steps:
       - uses: actions/checkout@v4
@@ -25,26 +27,21 @@ jobs:
       - name: Run tests and verify coverage thresholds
         run: mvn verify
 
-      - name: Post coverage summary to PR
-        uses: madrapps/jacoco-report@v1.7.1
-        with:
-          paths: budinv-model/target/site/jacoco/jacoco.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: Test Coverage Report
-          min-coverage-overall: 50
-          min-coverage-changed-files: 50
-
       - name: Upload coverage report
+        id: upload-maven-coverage
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
-          path: budinv-model/target/site/jacoco/
+          path: "**/target/site/jacoco/jacoco.xml"
+          if-no-files-found: ignore
           retention-days: 30
 
   android:
-    name: Android Build & Tests
+    name: Android — Build & Test
     runs-on: ubuntu-latest
+    outputs:
+      android-report-url: ${{ steps.upload-android-coverage.outputs.artifact-url }}
 
     steps:
       - uses: actions/checkout@v4
@@ -59,20 +56,17 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Install budinv-model to local Maven repo
+        run: |
+          mvn install -N -DskipTests
+          mvn install -pl budinv-model -DskipTests
+
       - name: Run tests and verify coverage thresholds
         working-directory: budinv-android
         run: ./gradlew checkCoverage
 
-      - name: Post coverage summary to PR
-        uses: madrapps/jacoco-report@v1.7.1
-        with:
-          paths: budinv-android/app/build/reports/jacoco/reportCoverage/reportCoverage.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: Android Test Coverage Report
-          min-coverage-overall: 40
-          min-coverage-changed-files: 40
-
       - name: Upload coverage report
+        id: upload-android-coverage
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -104,3 +98,111 @@ jobs:
               repo: context.repo.repo,
               body: '📦 Debug APK ready: [Download app-debug.apk](${{ steps.upload-apk.outputs.artifact-url }})'
             });
+
+  coverage-report:
+    name: Coverage — Post Report
+    needs: [test, android]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Maven coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: jacoco-report
+          path: coverage/maven
+
+      - name: Download Android coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: android-jacoco-report
+          path: coverage/android
+
+      - name: Parse coverage data
+        run: |
+          python3 - <<'PYEOF'
+          import xml.etree.ElementTree as ET
+          import re, os
+
+          MAVEN_MODULES = [
+              ('budinv-model',          'coverage/maven/budinv-model/target/site/jacoco/jacoco.xml'),
+              ('budinv-controller',     'coverage/maven/budinv-controller/target/site/jacoco/jacoco.xml'),
+              ('budinv-infrastructure', 'coverage/maven/budinv-infrastructure/target/site/jacoco/jacoco.xml'),
+              ('budinv-rest-services',  'coverage/maven/budinv-rest-services/target/site/jacoco/jacoco.xml'),
+              ('budinv-web',            'coverage/maven/budinv-web/target/site/jacoco/jacoco.xml'),
+          ]
+
+          def pct(covered, missed):
+              total = covered + missed
+              return f"{covered * 100 / total:.1f}%" if total > 0 else "—"
+
+          def parse_jacoco(path):
+              with open(path) as f:
+                  content = f.read()
+              content = re.sub(r'<!DOCTYPE[^>]*>', '', content)
+              root = ET.fromstring(content)
+              return {
+                  c.get('type'): (int(c.get('covered', 0)), int(c.get('missed', 0)))
+                  for c in root.findall('counter')
+              }
+
+          rows = []
+          tl_cov = tl_mis = tb_cov = tb_mis = 0
+
+          for name, path in MAVEN_MODULES:
+              if os.path.exists(path):
+                  c = parse_jacoco(path)
+                  lc, lm = c.get('LINE', (0, 0))
+                  bc, bm = c.get('BRANCH', (0, 0))
+                  tl_cov += lc; tl_mis += lm; tb_cov += bc; tb_mis += bm
+                  rows.append((name, pct(lc, lm), pct(bc, bm)))
+              else:
+                  rows.append((name, '—', '—'))
+
+          android = 'coverage/android/reportCoverage.xml'
+          if os.path.exists(android):
+              c = parse_jacoco(android)
+              lc, lm = c.get('LINE', (0, 0))
+              bc, bm = c.get('BRANCH', (0, 0))
+              tl_cov += lc; tl_mis += lm; tb_cov += bc; tb_mis += bm
+              rows.append(('Android', pct(lc, lm), pct(bc, bm)))
+
+          body = ['## Test Coverage', '',
+                  '| Module | Line | Branch |',
+                  '| --- | ---: | ---: |']
+          for name, line, branch in rows:
+              body.append(f'| `{name}` | {line} | {branch} |')
+          body += ['', f'**Overall:** {pct(tl_cov, tl_mis)} lines &nbsp; {pct(tb_cov, tb_mis)} branches']
+
+          with open('coverage-comment.md', 'w') as f:
+              f.write('\n'.join(body))
+          PYEOF
+
+      - name: Post coverage comment to PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let body = fs.readFileSync('coverage-comment.md', 'utf8');
+            body += '\n\n---\n📊 Full reports: [Maven](${{ needs.test.outputs.maven-report-url }}) | [Android](${{ needs.android.outputs.android-report-url }})';
+
+            const { data: comments } = await github.rest.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            const existing = comments.find(c => c.body && c.body.startsWith('## Test Coverage'));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                comment_id: existing.id,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body,
+              });
+            }
