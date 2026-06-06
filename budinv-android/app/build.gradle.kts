@@ -99,7 +99,10 @@ val coverageClassDirs: FileTree = fileTree(layout.buildDirectory.dir("tmp/kotlin
         "**/BuildConfig.*",
         "**/Manifest*.*",
         "**/*Test*.*",
-        "**/theme/**"
+        "**/theme/**",
+        "**/*Activity*",
+        "**/*Screen*",
+        "**/*Sheet*"
     )
 }
 
