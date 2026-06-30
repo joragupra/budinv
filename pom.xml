@@ -23,7 +23,7 @@
     <jakarta.persistence.version>3.2.0</jakarta.persistence.version>
     <jakarta.jaxb.version>4.0.2</jakarta.jaxb.version>
     <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
-    <jackson.version>2.19.0</jackson.version>
+    <jackson.version>2.22.0</jackson.version>
     <hsqldb.version>2.7.4</hsqldb.version>
     <slf4j.version>2.0.17</slf4j.version>
     <junit.version>5.13.0</junit.version>
